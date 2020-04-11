@@ -72,9 +72,14 @@ public class FlyMenuBar
 		return index;//返回各个菜单项索引
 	}
 	
+	/*移除菜单*/
+	public void RemoveMenu(int menu_index){menu.remove(menu_index);}
+	
 	/*菜单插入分割线*/
 	public void MenuInsertSeparator(int menu_index,int index)
 	{menu.get(menu_index).insertSeparator(index);}
+	
+	/*菜单项添加监听器*/
 	public void MenuItemAddListener(int menu_item_index,FlyActionAndChangeListener listener)
 	{
 		/*给菜单项添加ActionListener和ChangeListener*/

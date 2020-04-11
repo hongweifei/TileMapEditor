@@ -7,52 +7,55 @@ import java.net.MalformedURLException;
 
 import javax.swing.event.ChangeEvent;
 
-import fly.graphics.Event;
-import fly.graphics.FlyRenderer;
-import fly.graphics.FlyScene;
-import fly.window.FlyMenuBar;
+import fly.graphics.事件;
+import fly.graphics.场景;
+import fly.graphics.渲染器;
 import fly.window.FlyActionAndChangeListener;
-import fly.window.FlyList;
-import fly.window.Window;
+import fly.window.列表框;
+import fly.window.窗口;
+import fly.window.菜单栏;
 
 public class Main
 {
-	static Window window;
-	static FlyMenuBar menu;
+	static 窗口 主窗口;
+	static 菜单栏 菜单栏1;
 	
 	public static void main(String[] args) throws MalformedURLException, IOException 
 	{
-		window = new Window("Tile Map Editor");
+		主窗口 = new 窗口("Tile Map Editor");
 		
-		menu = new FlyMenuBar();
-		menu.AddMenu("文件");
+		菜单栏1 = new 菜单栏();
+		菜单栏1.添加菜单("文件");
 		
-		String[] menu_item_title = {"新建","打开","保存","另存为","关闭"};
-		menu.AddMenuItems(0, menu_item_title);
-		menu.MenuInsertSeparator(0, 2);
-		menu.MenuInsertSeparator(0, 5);
+		String[] 菜单项文本 = {"新建","打开","保存","另存为","关闭"};
+		菜单栏1.添加菜单项(0, 菜单项文本);
+		菜单栏1.插入分割线(0, 2);
+		菜单栏1.插入分割线(0, 5);
 		
-		FlyList list = new FlyList();
+		列表框 列表框1 = new 列表框();
+		列表框1.添加列表项("Test");
+		列表框1.添加列表项(10);
 		
-		window.SetMenuBar(menu);
+		主窗口.设置菜单栏(菜单栏1);
+		主窗口.添加(列表框1);
 		
-		menu.MenuItemAddListener(4, new FlyActionAndChangeListener() {
+		菜单栏1.添加监听器(4, new FlyActionAndChangeListener() {
 			
 			@Override public void actionPerformed(ActionEvent event)
 			{System.out.println("Window close");System.exit(0);}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
-		FlyScene scene = new FlyScene(window);
-		scene.GetRenderer().SetRenderEvent(new Event(){
+		场景 场景1 = new 场景(主窗口);
+		场景1.获取渲染器().设置渲染事件(new 事件(){
 
 			@Override
-			public void invoke(Object object)
+			public void 执行(Object 物体)
 			{
-				FlyRenderer renderer = scene.GetRenderer();
-				Graphics g = (Graphics)object;
+				渲染器 渲染器1 = 场景1.获取渲染器();
+				Graphics g = (Graphics)物体;
 				
-				renderer.DrawText(g, "Hello world!!!", 100, 100);
+				渲染器1.绘制文本(g, "Hello world!!!", 100, 100);
 			}
 			
 		});
