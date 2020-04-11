@@ -2,28 +2,26 @@ package main;
 
 import java.awt.Graphics2D;
 
-import window.Menu;
-import window.Window;
+import fly.window.FlyMenuBar;
+import fly.window.Window;
 
-public class Main 
+public class Main
 {
 	static Window window;
-	static Menu menu;
-	static Graphics2D g;
+	static FlyMenuBar menu;
 	
 	public static void main(String[] args) 
 	{
-		window = new Window("Tile Map Editor",800,600);
+		window = new Window("Tile Map Editor");
 		
-		menu = new Menu(9,9);
+		menu = new FlyMenuBar();
 		menu.AddMenu("文件");
 		
 		String[] menu_item_title = {"新建","打开","保存","另存为"};
 		menu.AddMenuItems(0, menu_item_title);
-		menu.InsertSeparator(0, 2);
+		menu.MenuInsertSeparator(0, 2);
 		
-		window.AddMenu(menu);
-		
+		window.AddMenuBar(menu);
 		
 	}
 	

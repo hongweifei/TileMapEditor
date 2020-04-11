@@ -1,19 +1,24 @@
-package window;
+package fly.window;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class Menu 
+public class MenuBar
 {
-	private JMenuBar menu_bar;//菜单栏
-	private JMenu[] menu;//菜单
+	private JMenuBar menu_bar;		//菜单栏
+	private JMenu[] menu;			//菜单
 	private JMenuItem[][] menu_item;//菜单项
 	
-	private int menu_n = 0;
-	private int[] menu_item_n = {0};
+	private int menu_n = 0;			//菜单数量
+	private int[] menu_item_n = {0};//菜单项数量
 	
-	public Menu(int MAX_MENU_N,int MAX_MENU_ITEM_N)
+	public MenuBar()
+	{
+		this(1,1);
+	}
+	
+	public MenuBar(int MAX_MENU_N,int MAX_MENU_ITEM_N)
 	{
 		this.menu_bar = new JMenuBar();
 		
@@ -40,7 +45,7 @@ public class Menu
 		
 		for(int i = 0;i < menu_title.length;i++)
 		{
-			menu_index[i] = i;
+			menu_index[i] = i + menu.length;
 			this.AddMenu(menu_title[i]);
 		}
 		
@@ -66,15 +71,15 @@ public class Menu
 		}
 	}
 	
-	public void InsertSeparator(int menu_index,int index)
+	public void MenuInsertSeparator(int menu_index,int index)
 	{
 		this.menu[menu_index].insertSeparator(index);
 	}
 	
-	public void AddListener(int menu_index,int menu_item_index,
-			Listener listener)
+	public void MenuItemAddListener(int menu_index,int menu_item_index,Listener listener)
 	{
 		this.menu_item[menu_index][menu_item_index].addActionListener(listener);
+		this.menu_item[menu_index][menu_item_index].addChangeListener(listener);
 	}
 	
 	public JMenuBar GetMenuBar()
