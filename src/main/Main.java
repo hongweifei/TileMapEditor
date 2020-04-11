@@ -35,7 +35,7 @@ public class Main
 				Renderer renderer = scene.GetRenderer();
 				Graphics g = (Graphics)object;
 				
-				renderer.DrawText(g, "Hello", 100, 100);
+				renderer.DrawText(g, "Hello world!!!", 100, 100);
 			}
 			
 		});

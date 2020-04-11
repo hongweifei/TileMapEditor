@@ -13,6 +13,7 @@ public class Window
 	{
 		this.window.setTitle(title);
 		this.window.setSize(width, height);
+		this.window.setLocationRelativeTo(null);
 		this.window.setLayout(new BorderLayout());
 		this.window.setVisible(true);
 		this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
