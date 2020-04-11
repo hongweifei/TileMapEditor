@@ -1,7 +1,10 @@
 package main;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
+import fly.graphics.Event;
+import fly.graphics.Renderer;
+import fly.graphics.Scene;
 import fly.window.FlyMenuBar;
 import fly.window.Window;
 
@@ -23,6 +26,19 @@ public class Main
 		
 		window.AddMenuBar(menu);
 		
+		Scene scene = new Scene(window);
+		scene.GetRenderer().SetRenderEvent(new Event(){
+
+			@Override
+			public void invoke(Object object)
+			{
+				Renderer renderer = scene.GetRenderer();
+				Graphics g = (Graphics)object;
+				
+				renderer.DrawText(g, "Hello", 100, 100);
+			}
+			
+		});
 	}
 	
 	
