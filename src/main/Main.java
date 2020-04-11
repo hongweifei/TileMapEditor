@@ -15,6 +15,8 @@ import fly.window.列表框;
 import fly.window.窗口;
 import fly.window.菜单栏;
 
+/*Java无宏定义，不可全中文*/
+
 public class Main
 {
 	static 窗口 主窗口;
