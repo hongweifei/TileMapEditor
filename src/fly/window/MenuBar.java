@@ -81,7 +81,7 @@ public class MenuBar
 	{this.menu[menu_index].insertSeparator(index);}
 	
 	/*给菜单项添加监听器*/
-	public void MenuItemAddListener(int menu_index,int menu_item_index,Listener listener)
+	public void MenuItemAddListener(int menu_index,int menu_item_index,FlyActionAndChangeListener listener)
 	{
 		this.menu_item[menu_index][menu_item_index].addActionListener(listener);
 		this.menu_item[menu_index][menu_item_index].addChangeListener(listener);

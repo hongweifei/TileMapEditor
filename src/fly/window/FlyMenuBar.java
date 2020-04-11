@@ -75,7 +75,7 @@ public class FlyMenuBar
 	/*菜单插入分割线*/
 	public void MenuInsertSeparator(int menu_index,int index)
 	{menu.get(menu_index).insertSeparator(index);}
-	public void MenuItemAddListener(int menu_item_index,Listener listener)
+	public void MenuItemAddListener(int menu_item_index,FlyActionAndChangeListener listener)
 	{
 		/*给菜单项添加ActionListener和ChangeListener*/
 		menu_item.get(menu_item_index).addActionListener(listener);

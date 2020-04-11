@@ -2,14 +2,17 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.swing.event.ChangeEvent;
 
 import fly.graphics.Event;
-import fly.graphics.Renderer;
-import fly.graphics.Scene;
+import fly.graphics.FlyRenderer;
+import fly.graphics.FlyScene;
 import fly.window.FlyMenuBar;
-import fly.window.Listener;
+import fly.window.FlyActionAndChangeListener;
+import fly.window.FlyList;
 import fly.window.Window;
 
 public class Main
@@ -17,7 +20,7 @@ public class Main
 	static Window window;
 	static FlyMenuBar menu;
 	
-	public static void main(String[] args) 
+	public static void main(String[] args) throws MalformedURLException, IOException 
 	{
 		window = new Window("Tile Map Editor");
 		
@@ -29,32 +32,24 @@ public class Main
 		menu.MenuInsertSeparator(0, 2);
 		menu.MenuInsertSeparator(0, 5);
 		
-		window.AddMenuBar(menu);
+		FlyList list = new FlyList();
 		
-		menu.MenuItemAddListener(4, new Listener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event)
-			{
-				System.out.println("Close");
-				System.exit(0);
-			}
-
-			@Override
-			public void stateChanged(ChangeEvent event)
-			{
-				
-			}
+		window.SetMenuBar(menu);
+		
+		menu.MenuItemAddListener(4, new FlyActionAndChangeListener() {
 			
+			@Override public void actionPerformed(ActionEvent event)
+			{System.out.println("Window close");System.exit(0);}
+			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
-		Scene scene = new Scene(window);
+		FlyScene scene = new FlyScene(window);
 		scene.GetRenderer().SetRenderEvent(new Event(){
 
 			@Override
 			public void invoke(Object object)
 			{
-				Renderer renderer = scene.GetRenderer();
+				FlyRenderer renderer = scene.GetRenderer();
 				Graphics g = (Graphics)object;
 				
 				renderer.DrawText(g, "Hello world!!!", 100, 100);
