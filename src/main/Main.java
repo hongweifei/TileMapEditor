@@ -57,9 +57,9 @@ public class Main
 				{
 					System.out.println("新建文件");
 					
-					TileMap map = new TileMap(10,10,100,100,1,
+					TileMap map = new TileMap(10,10,32,32,1,
 							new String[] {"E:/wall.png"},
-							new short[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0});
+							new short[] {1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0});
 					
 					try {TileMap.WriteMap(文件选择器1.获取选中文件的路径(), map);}
 					catch (IOException e) {e.printStackTrace();}
@@ -120,15 +120,16 @@ public class Main
 				
 				if(map != null)
 				{
-					System.out.println("render map");
 					for(int i = 0;i < map.height;i++)
 					{
 						for(int j = 0;j < map.width;j++)
 						{
-							if(map.data[i] == 0)
-								continue;
-							渲染器1.绘制图像(g, img[map.data[i]], j * map.tile_width, 
-							i * map.tile_height, map.tile_width, map.tile_height,null);
+							int n = j + i * map.width;
+							if(map.data[n] > 0)
+							{
+								渲染器1.绘制图像(g, img[map.data[n] - 1], j * map.tile_width, 
+										i * map.tile_height, map.tile_width, map.tile_height,null);
+							}
 							
 							渲染器1.绘制矩形(g, j * map.tile_width, i * map.tile_height, 
 									map.tile_width, map.tile_height);
