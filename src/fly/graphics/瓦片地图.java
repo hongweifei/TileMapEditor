@@ -1,10 +1,15 @@
 package fly.graphics;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class 瓦片地图
 {
@@ -42,6 +47,65 @@ public class 瓦片地图
 		this.瓦片图像路径 = 瓦片图像路径;
 		this.数据 = 地图数据;
 	}
+	
+	/*渲染地图*/
+	public void 渲染(渲染器 瓦片地图渲染器,Graphics g)
+	{
+		final Image[] 图像 = new Image[this.瓦片图像数量];
+		for(int i = 0;i < this.瓦片图像数量;i++)
+		{
+			try {图像[i] = ImageIO.read(new File(this.瓦片图像路径[i]));}
+			catch (IOException e) {e.printStackTrace();}
+		}
+		
+		for(int i = 0;i < this.高度;i++)
+		{
+			for(int j = 0;j < this.宽度;j++)
+			{
+				int n = j + i * this.宽度;
+				if(this.数据[n] > 0)
+				{
+					瓦片地图渲染器.绘制图像(g, 图像[this.数据[n] - 1], j * this.瓦片宽度, 
+							i * this.瓦片高度, this.瓦片宽度, this.瓦片高度,null);
+				}
+				
+				瓦片地图渲染器.绘制矩形(g, j * this.瓦片宽度, i * this.瓦片高度, 
+						this.瓦片宽度, this.瓦片高度);
+			}
+		}
+		
+	}
+	
+	
+	/*渲染地图*/
+	public void 渲染(FlyRenderer renderer,Graphics g)
+	{
+		final Image[] 图像 = new Image[this.瓦片图像数量];
+		for(int i = 0;i < this.瓦片图像数量;i++)
+		{
+			try {图像[i] = ImageIO.read(new File(this.瓦片图像路径[i]));}
+			catch (IOException e) {e.printStackTrace();}
+		}
+		
+		for(int i = 0;i < this.高度;i++)
+		{
+			for(int j = 0;j < this.宽度;j++)
+			{
+				int n = j + i * this.宽度;
+				if(this.数据[n] > 0)
+				{
+					renderer.DrawImage(g, 图像[this.数据[n] - 1], j * this.瓦片宽度, 
+							i * this.瓦片高度, this.瓦片宽度, this.瓦片高度,null);
+				}
+				
+				renderer.DrawRect(g, j * this.瓦片宽度, i * this.瓦片高度, 
+						this.瓦片宽度, this.瓦片高度);
+			}
+		}
+	}
+	
+	
+	
 	
 	/*写出地图*/
 	public static void 写出地图(String 路径,瓦片地图 地图) throws IOException

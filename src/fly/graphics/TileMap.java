@@ -1,10 +1,15 @@
 package fly.graphics;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class TileMap
 {
@@ -33,6 +38,63 @@ public class TileMap
 		this.tile_image_path = tile_image_path;
 		this.data = data;
 	}
+	
+	/*渲染地图*/
+	public void Render(FlyRenderer renderer,Graphics g)
+	{
+		final Image[] img = new Image[this.tile_count];
+		for(int i = 0;i < this.tile_count;i++)
+		{
+			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
+			catch (IOException e) {e.printStackTrace();}
+		}
+		
+		for(int i = 0;i < this.height;i++)
+		{
+			for(int j = 0;j < this.width;j++)
+			{
+				int n = j + i * this.width;
+				if(this.data[n] > 0)
+				{
+					renderer.DrawImage(g, img[this.data[n] - 1], j * this.tile_width, 
+								i * this.tile_height, this.tile_width, this.tile_height,null);
+				}
+				
+				renderer.DrawRect(g, j * this.tile_width, i * this.tile_height, 
+						this.tile_width, this.tile_height);
+			}
+		}
+	}
+	
+	
+	/*渲染地图*/
+	public void 渲染(渲染器 renderer,Graphics g)
+	{
+		final Image[] img = new Image[this.tile_count];
+		for(int i = 0;i < this.tile_count;i++)
+		{
+			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
+			catch (IOException e) {e.printStackTrace();}
+		}
+		
+		for(int i = 0;i < this.height;i++)
+		{
+			for(int j = 0;j < this.width;j++)
+			{
+				int n = j + i * this.width;
+				if(this.data[n] > 0)
+				{
+					renderer.绘制图像(g, img[this.data[n] - 1], j * this.tile_width, 
+								i * this.tile_height, this.tile_width, this.tile_height,null);
+				}
+				
+				renderer.绘制矩形(g, j * this.tile_width, i * this.tile_height, 
+						this.tile_width, this.tile_height);
+			}
+		}
+	}
+	
+	
 	
 	/*写出地图*/
 	public static void WriteMap(String path,TileMap map) throws IOException

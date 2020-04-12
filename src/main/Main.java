@@ -44,9 +44,6 @@ public class Main
 	static Image[] img = null;
 	static String TileMapPath = null;
 	
-	static 列表框<String> 列表框1 = new 列表框<String>();
-	static FlyPopupMenu popup_menu = new FlyPopupMenu();
-	
 	public static TileMap OpenTileMap(String path)
 	{
 		TileMap map = null;
@@ -69,11 +66,6 @@ public class Main
 			try {img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
 			catch (IOException e) {e.printStackTrace();}
 		}
-		
-		列表框1.清空列表项();
-		列表框1.添加列表项(map.tile_image_path);
-		主窗口.添加(列表框1);
-		主窗口.设置可视(true);
 		
 		return map;
 	}
@@ -130,15 +122,13 @@ public class Main
 		菜单栏1 = new 菜单栏();
 		菜单栏1.添加菜单("文件");
 		
-		菜单栏1.添加菜单项(0, "新建","打开","保存","另存为","关闭");
+		菜单栏1.添加菜单项(0, "新建","打开","保存","另存为","导入图片","移除图片","关闭");
 		菜单栏1.插入分割线(0, 2);
 		菜单栏1.插入分割线(0, 5);
-		
-		popup_menu.AddItem("导入图片");
-		popup_menu.AddItem("移除图片");
-		
+		菜单栏1.插入分割线(0, 8);
+		 
 		/*导入图片*/
-		popup_menu.AddActionListener(0, new ActionListener(){
+		菜单栏1.添加监听器(4, new FlyActionAndChangeListener(){
 
 			@Override public void actionPerformed(ActionEvent e)
 			{
@@ -146,19 +136,30 @@ public class Main
 				文件选择器1.设置文件过滤器("图像文件", "png","bmp","jpg","jepg");
 				if(文件选择器1.弹出对话框("确定") == 文件选择器.确定选项)
 				{
-					map.tile_count++;
+					if(map != null)
+					{
+						map.tile_count++;
 					
-					String[] image_path = map.tile_image_path;
-					map.tile_image_path = new String[map.tile_count];
-					
-					System.arraycopy(image_path,0,map.tile_image_path,0,image_path.length);
-					
-					map.tile_image_path[map.tile_count - 1] = 文件选择器1.获取选中文件的路径();
-					
-					列表框1.添加列表项(map.tile_image_path[map.tile_count - 1]);
-					主窗口.设置可视(true);
+						String[] image_path = map.tile_image_path;
+						map.tile_image_path = new String[map.tile_count];
+						
+						System.arraycopy(image_path,0,map.tile_image_path,0,image_path.length);
+						
+						map.tile_image_path[map.tile_count - 1] = 文件选择器1.获取选中文件的路径();
+					}
 				}
 			}
+			@Override public void stateChanged(ChangeEvent event) {}
+		});
+		
+		/*移除图片*/
+		菜单栏1.添加监听器(5, new FlyActionAndChangeListener(){
+
+			@Override public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
 		
@@ -203,7 +204,8 @@ public class Main
 									j * map.tile_width, i * map.tile_height, 
 									map.tile_width, map.tile_height))
 							{
-								map.data[n] = 0;
+								if(map.data[n] > 0)
+									map.data[n] -= 1;
 							}
 						}
 					}
@@ -240,7 +242,7 @@ public class Main
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
 				文件选择器1.设置文件过滤器("地图文件", "map","MAP");
-				if(文件选择器1.弹出保存文件对话框() == 文件选择器.确定选项)
+				if(文件选择器1.弹出打开文件对话框() == 文件选择器.确定选项)
 				{
 					System.out.println("打开文件");
 					
@@ -268,7 +270,7 @@ public class Main
 		});
 		
 		/*关闭程序*/
-		菜单栏1.添加监听器(4, new FlyActionAndChangeListener() {
+		菜单栏1.添加监听器(6, new FlyActionAndChangeListener() {
 			
 			@Override public void actionPerformed(ActionEvent event)
 			{System.out.println("Window close");System.exit(0);}
@@ -285,24 +287,7 @@ public class Main
 				Graphics g = (Graphics)物体;
 				
 				if(map != null)
-				{
-					for(int i = 0;i < map.height;i++)
-					{
-						for(int j = 0;j < map.width;j++)
-						{
-							int n = j + i * map.width;
-							if(map.data[n] > 0)
-							{
-								渲染器1.绘制图像(g, img[map.data[n] - 1], j * map.tile_width, 
-										i * map.tile_height, map.tile_width, map.tile_height,null);
-							}
-							
-							渲染器1.绘制矩形(g, j * map.tile_width, i * map.tile_height, 
-									map.tile_width, map.tile_height);
-						}
-					}
-				}
-				
+					map.渲染(渲染器1, g);
 			}
 			
 		});
