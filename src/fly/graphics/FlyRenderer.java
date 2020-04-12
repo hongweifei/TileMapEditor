@@ -5,6 +5,17 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 
+
+/*图像读取
+ * 1.Image image = ImageIO.read(new FileInputStream(“文件路径”));
+ * 2.Image image = ImageIO.read(new File（）);
+ * 3.Image image = ImageIO.read(new URL（）));
+ * 
+ * 4.Toolkit.getDefaultToolkit().getImage(“图片路径”)；
+ * 
+ * 5.new ImageIcon("图片路径).getImage()；
+ */
+
 public class FlyRenderer
 {
 	private Event render_event;

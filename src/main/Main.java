@@ -3,7 +3,7 @@ package main;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -15,8 +15,6 @@ import fly.graphics.事件;
 import fly.graphics.场景;
 import fly.graphics.渲染器;
 import fly.window.FlyActionAndChangeListener;
-import fly.window.FlyFileChooser;
-import fly.window.列表框;
 import fly.window.文件选择器;
 import fly.window.窗口;
 import fly.window.菜单栏;
@@ -29,6 +27,7 @@ public class Main
 	static 菜单栏 菜单栏1;
 	
 	static TileMap map = null;
+	static Image[] img = null;
 	
 	public static void main(String[] args) throws MalformedURLException, IOException 
 	{
@@ -54,9 +53,17 @@ public class Main
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
-				if(文件选择器1.弹出保存文件对话框() == 文件选择器1.批准选项)
+				if(文件选择器1.弹出保存文件对话框() == 文件选择器1.确定选项)
 				{
 					System.out.println("新建文件");
+					
+					TileMap map = new TileMap(10,10,100,100,1,
+							new String[] {"E:/wall.png"},
+							new short[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0});
+					
+					try {TileMap.WriteMap(文件选择器1.获取选中文件的路径(), map);}
+					catch (IOException e) {e.printStackTrace();}
+					
 				}
 			}
 			
@@ -68,7 +75,7 @@ public class Main
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
-				if(文件选择器1.弹出保存文件对话框() == 文件选择器1.批准选项)
+				if(文件选择器1.弹出保存文件对话框() == 文件选择器1.确定选项)
 				{
 					System.out.println("打开文件");
 					
@@ -80,7 +87,13 @@ public class Main
 						System.out.println(map.data[i]);
 					}
 					
-					
+					img = new Image[map.tile_count];
+					for(int i = 0;i < map.tile_count;i++)
+					{
+						System.out.println(map.tile_image_path[i]);
+						try {img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
+						catch (IOException e) {e.printStackTrace();}
+					}
 				}
 			}
 			
@@ -103,23 +116,22 @@ public class Main
 				渲染器 渲染器1 = 场景1.获取渲染器();
 				Graphics g = (Graphics)物体;
 				
+				渲染器1.绘制文本(g, "MapRender", 100, 100);
+				
 				if(map != null)
 				{
-					Image[] img = new Image[map.tile_count];
-					for(int i = 0;i < map.tile_count;i++)
-					{
-						System.out.println(map.tile_image_path[i]);
-						try {img[i] = ImageIO.read(new FileInputStream(map.tile_image_path[i]));}
-						catch (IOException e) {e.printStackTrace();}
-					}
+					System.out.println("render map");
 					for(int i = 0;i < map.height;i++)
 					{
 						for(int j = 0;j < map.width;j++)
 						{
 							if(map.data[i] == 0)
 								continue;
-							渲染器1.绘制图像(g, img[map.data[i] - 1], j * map.tile_width, 
+							渲染器1.绘制图像(g, img[map.data[i]], j * map.tile_width, 
 							i * map.tile_height, map.tile_width, map.tile_height,null);
+							
+							渲染器1.绘制矩形(g, j * map.tile_width, i * map.tile_height, 
+									map.tile_width, map.tile_height);
 						}
 					}
 				}

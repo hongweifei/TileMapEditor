@@ -1,7 +1,9 @@
 package fly.graphics;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class TileMap
@@ -18,13 +20,62 @@ public class TileMap
 	
 	public TileMap()
 	{
-		
+		width = 0;
+		height = 0;
+		tile_width = 0;
+		tile_height = 0;
+		tile_count = 0;
+		tile_image_path = new String[0];
+		data = null;
+	}
+	
+	public TileMap(int width,int height,
+			int tile_width,int tile_height,
+			int tile_count,String[] tile_image_path,
+			short[] data)
+	{
+		this.width = (short) width;
+		this.height = (short) height;
+		this.tile_width = (short) tile_width;
+		this.tile_height = (short) tile_height;
+		this.tile_count = (short) tile_count;
+		this.tile_image_path = tile_image_path;
+		this.data = data;
 	}
 	
 	/*写出地图*/
-	public static void WriteMap()
+	public static void WriteMap(String path,TileMap map) throws IOException
 	{
+		DataOutputStream writer = new DataOutputStream(new FileOutputStream (path));//创建地图文件
 		
+		writer.writeShort(map.width);
+		writer.writeShort(map.height);
+		writer.writeShort(map.tile_width);
+		writer.writeShort(map.tile_height);
+		
+		writer.writeShort(map.tile_count);
+		
+		for(int i = 0;i < map.tile_image_path.length;i++)
+		{
+			short str_n = (short) map.tile_image_path[i].length();
+			writer.writeShort(str_n);
+			writer.writeChars(map.tile_image_path[i]);
+		}
+		
+		for(int i = 0;i < map.width * map.height;i++)
+		{
+			if(map.data == null)
+				writer.writeShort(0);
+			else if(map.data.length < map.width * map.height)
+			{
+				if(i < map.data.length)
+					writer.writeShort(map.data[i]);
+				else
+					writer.writeShort(0);
+			}
+			else
+				writer.writeShort(map.data[i]);
+		}
 	}
 	
 	/*读取地图*/
@@ -32,31 +83,27 @@ public class TileMap
 	{
 		DataInputStream reader = new DataInputStream(new FileInputStream (path));//打开地图文件
 		
-		byte[] map_information = new byte[10];
-		
-		reader.read(map_information, 0, 10);//读取地图数据
-		
 		TileMap map = new TileMap();
 		
-		map.width = (short) ((map_information[0] & 0xff) | (map_information[1] & 0xff));
-		map.height = (short) ((map_information[2] & 0xff) | (map_information[3] & 0xff));
-		map.tile_width = (short) ((map_information[4] & 0xff) | (map_information[5] & 0xff));
-		map.tile_height = (short) ((map_information[6] & 0xff) | (map_information[7] & 0xff));
+		map.width = reader.readShort();
+		map.height = reader.readShort();
+		map.tile_width = reader.readShort();
+		map.tile_height = reader.readShort();
 		
-		map.tile_count = (short) ((map_information[8] & 0xff) | (map_information[9] & 0xff));
+		map.tile_count = reader.readShort();
 		map.tile_image_path = new String[map.tile_count];
 		
 		for(int i = 0;i < map.tile_count;i++)
 		{
 			/*读取图片路径字节数*/
-			byte[] str_n = new byte[2];
-			reader.read(str_n, 0, 2);
-			
-			short image_path_n = (short) ((str_n[0] & 0xff) | (str_n[1] & 0xff));
+			short image_path_n = reader.readShort();
 			
 			/*读取图片路径*/
-			byte[] image_path = new byte[image_path_n];
-			reader.read(image_path, 0, image_path_n);
+			char[] image_path = new char[image_path_n];
+			for(int j = 0;j < image_path_n;j++)
+			{
+				image_path[j] = reader.readChar();
+			}
 			
 			map.tile_image_path[i] = new String(image_path);
 		}
@@ -65,10 +112,7 @@ public class TileMap
 		
 		for(int i = 0;i < map.data.length;i++)
 		{
-			byte[] data = new byte[2];
-			reader.read(data, 0, 2);
-			
-			map.data[i] = (short) ((data[0] & 0xff) | (data[1] & 0xff));
+			map.data[i] = reader.readShort();
 		}
 		
 		

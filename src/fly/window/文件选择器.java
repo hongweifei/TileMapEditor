@@ -11,7 +11,7 @@ public class 文件选择器
 	private JFileChooser file_chooser;//文件选择器
 	private FileFilter file_filter;//文件过滤器
 	
-	public static final int 批准选项 = JFileChooser.APPROVE_OPTION;
+	public static final int 确定选项 = JFileChooser.APPROVE_OPTION;
 	public static final int 取消选项 = JFileChooser.CANCEL_OPTION;
 	public static final int 错误选项 = JFileChooser.ERROR_OPTION;
 	
