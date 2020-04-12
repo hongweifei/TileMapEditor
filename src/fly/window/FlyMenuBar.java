@@ -86,6 +86,7 @@ public class FlyMenuBar
 		menu_item.get(menu_item_index).addActionListener(listener);
 		menu_item.get(menu_item_index).addChangeListener(listener);
 	}
+
 	
 	public JMenuBar GetMenuBar(){return menu_bar;}
 	

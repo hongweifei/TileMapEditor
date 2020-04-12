@@ -48,12 +48,12 @@ public class 窗口
 	
 	
 	/*设置菜单栏*/
-	public void 设置菜单栏(MenuBar 菜单栏)
-	{this.window.setJMenuBar(菜单栏.GetMenuBar());this.window.setVisible(true);}
+	public void 设置菜单栏(MenuBar menu_bar)
+	{this.window.setJMenuBar(menu_bar.GetMenuBar());this.window.setVisible(true);}
 	
 	/*设置Fly菜单栏*/
-	public void 设置菜单栏(FlyMenuBar 菜单栏)
-	{this.window.setJMenuBar(菜单栏.GetMenuBar());this.window.setVisible(true);}
+	public void 设置菜单栏(FlyMenuBar menu_bar)
+	{this.window.setJMenuBar(menu_bar.GetMenuBar());this.window.setVisible(true);}
 	
 	/*设置菜单栏*/
 	public void 设置菜单栏(菜单栏 menu_bar)
@@ -80,7 +80,7 @@ public class 窗口
 	{this.添加鼠标监听器(监听器);this.添加key监听器(监听器);this.window.addWindowListener(监听器);}
 	
 	/*添加组件*/
-	public void 添加(Widget 组件){this.window.getContentPane().add(组件.Get());}
+	public void 添加(Widget widget){this.window.getContentPane().add(widget.Get());}
 	public void 添加(组件 widget){this.window.getContentPane().add(widget.获取());}
 }
 

@@ -83,6 +83,7 @@ public class 菜单栏
 		menu_item.get(菜单项索引).addChangeListener(监听器);
 	}
 	
+	
 	public JMenuBar 获取菜单栏(){return menu_bar;}
 	
 	public JMenu 获取菜单(int 菜单索引){return menu.get(菜单索引);}
