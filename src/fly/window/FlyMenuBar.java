@@ -39,10 +39,7 @@ public class FlyMenuBar
 		int[] menu_index = new int[menu_text.length];//各个菜单的索引
 		
 		for(int i = 0;i < menu_text.length;i++)
-		{
-			menu_index[i] = menu.size();//索引等于菜单数量 -1，先赋值在创建菜单，所以不用 -1
-			this.AddMenu(menu_text[i]);//添加一个菜单
-		}
+			menu_index[i] = this.AddMenu(menu_text[i]);//添加一个菜单
 		
 		return menu_index;//返回各个菜单索引
 	}
@@ -64,10 +61,7 @@ public class FlyMenuBar
 		int[] index = new int[menu_item_text.length];//各个菜单的索引
 		
 		for(int i = 0;i < menu_item_text.length;i++)
-		{
-			index[i] = menu_item.size();//索引等于菜单项数量 -1，先赋值在创建菜单，所以不用 -1
-			this.AddMenuItem(menu_index,menu_item_text[i]);//添加一个菜单项
-		}
+			index[i] = this.AddMenuItem(menu_index,menu_item_text[i]);//添加一个菜单项
 		
 		return index;//返回各个菜单项索引
 	}
