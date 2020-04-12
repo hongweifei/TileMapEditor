@@ -5,12 +5,15 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 
 import fly.graphics.TileMap;
@@ -21,6 +24,7 @@ import fly.window.FlyActionAndChangeListener;
 import fly.window.FlyDialog;
 import fly.window.FlyLabelManager;
 import fly.window.FlyTextFieldManager;
+import fly.window.列表框;
 import fly.window.文件选择器;
 import fly.window.窗口;
 import fly.window.菜单栏;
@@ -43,6 +47,7 @@ public class Main
 	public static void main(String[] args) throws MalformedURLException, IOException 
 	{
 		主窗口 = new 窗口("Tile Map Editor");
+		//主窗口.设置布局();
 		
 		地图属性设置窗口 = new FlyDialog(主窗口,"地图属性设置",250,100);
 		地图属性设置窗口.SetLayout(new GridLayout(0,4));
@@ -75,6 +80,8 @@ public class Main
 						Integer.parseInt(text_field.GetText(2)),
 						Integer.parseInt(text_field.GetText(3)),0,null,null);
 				
+				TileMapPath += ".map";
+				
 				try {TileMap.WriteMap(TileMapPath, new_map);} 
 				catch (IOException e1){e1.printStackTrace();}
 				
@@ -94,19 +101,42 @@ public class Main
 		菜单栏1.插入分割线(0, 2);
 		菜单栏1.插入分割线(0, 5);
 		
-		//列表框 列表框1 = new 列表框();
-		//列表框1.添加列表项("Test");
-		//列表框1.添加列表项(10);
+		
+		列表框 列表框1 = new 列表框();
+		列表框1.添加列表项("Test");
+		列表框1.添加列表项(10);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2,0));
+		panel.add(列表框1.获取());
 		
 		主窗口.设置菜单栏(菜单栏1);
-		//主窗口.添加(列表框1);
 		
+		场景 场景1 = new 场景(主窗口);
+		场景1.设置鼠标监听器(new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				
+			}
+
+			@Override public void mousePressed(MouseEvent e) {}
+			@Override public void mouseReleased(MouseEvent e) {}
+			@Override public void mouseEntered(MouseEvent e) {}
+			@Override public void mouseExited(MouseEvent e) {}
+		});
+		
+		主窗口.添加(panel);
+		
+		/*新建地图*/
 		菜单栏1.添加监听器(0, new FlyActionAndChangeListener() {
 			
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
-				if(文件选择器1.弹出保存文件对话框() == 文件选择器.确定选项)
+				文件选择器1.设置文件过滤器("地图文件", "map","MAP");
+				if(文件选择器1.弹出对话框("创建") == 文件选择器.确定选项)
 				{
 					地图属性设置窗口.SetVisible(true);
 					TileMapPath = 文件选择器1.获取选中文件的路径();
@@ -116,11 +146,13 @@ public class Main
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
+		/*打开地图*/
 		菜单栏1.添加监听器(1, new FlyActionAndChangeListener() {
 			
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
+				文件选择器1.设置文件过滤器("地图文件", "map","MAP");
 				if(文件选择器1.弹出保存文件对话框() == 文件选择器.确定选项)
 				{
 					System.out.println("打开文件");
@@ -152,16 +184,21 @@ public class Main
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
+		/*保存地图*/
 		菜单栏1.添加监听器(2, new FlyActionAndChangeListener() {
 			
 			@Override public void actionPerformed(ActionEvent event)
 			{
-				try {TileMap.WriteMap(TileMapPath, map);} 
-				catch (IOException e1){e1.printStackTrace();}
+				if(map != null && TileMapPath != null)
+				{
+					try {TileMap.WriteMap(TileMapPath, map);} 
+					catch (IOException e1){e1.printStackTrace();}
+				}
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
+		/*关闭程序*/
 		菜单栏1.添加监听器(4, new FlyActionAndChangeListener() {
 			
 			@Override public void actionPerformed(ActionEvent event)
@@ -169,7 +206,7 @@ public class Main
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 		
-		场景 场景1 = new 场景(主窗口);
+
 		场景1.获取渲染器().设置渲染事件(new 事件(){
 
 			@Override

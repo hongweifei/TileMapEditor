@@ -1,9 +1,14 @@
 package fly.graphics;
 
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
+import fly.window.FlyWindowListener;
 import fly.window.Window;
 import fly.window.窗口;
 
@@ -36,6 +41,29 @@ public class FlyScene extends JPanel
 	/*设置和获取渲染器*/
 	public void SetRenderer(FlyRenderer renderer) {this.renderer = renderer;}
 	public FlyRenderer GetRenderer() {return this.renderer;}
+	
+	/*设置鼠标监听器*/
+	public void SetMouseListener(MouseListener listener){this.addMouseListener(listener);}
+	
+	/*设置鼠标motion监听器*/
+	public void SetMouseMotionListener(MouseMotionListener listener)
+	{this.addMouseMotionListener(listener);}
+	
+	/*设置鼠标wheel监听器*/
+	public void SetMouseWheelListener(MouseWheelListener listener)
+	{this.addMouseWheelListener(listener);}
+	
+	/*设置key监听器*/
+	public void SetKeyListener(KeyListener listener){this.addKeyListener(listener);}
+	
+	/*设置鼠标监听器和key监听器*/
+	public void SetMouseAndKeyListener(FlyWindowListener listener)
+	{
+		this.addMouseListener(listener);
+		this.addMouseMotionListener(listener);
+		this.addMouseWheelListener(listener);
+		this.addKeyListener(listener);
+	}
 	
 	/*将场景添加至窗口*/
 	public void AddToWindow(Window w){w.GetFrame().add(this);w.SetVisible(true);}

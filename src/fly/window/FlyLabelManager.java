@@ -22,6 +22,40 @@ public class FlyLabelManager
 	public FlyLabelManager(){label = new ArrayList<JLabel>();}
 	
 	
+	/*为一个标签设置鼠标监听器*/
+	public void SetMouseListener(FlyMouseListener listener,int index)
+	{
+		this.label.get(index).addMouseListener(listener);
+		this.label.get(index).addMouseMotionListener(listener);
+		this.label.get(index).addMouseWheelListener(listener);
+	}
+	
+	/*为所以标签设置鼠标监听器*/
+	public void SetMouseListener(FlyMouseListener listener)
+	{
+		for(int i = 0;i < this.label.size();i++)
+		{
+			this.label.get(i).addMouseListener(listener);
+			this.label.get(i).addMouseMotionListener(listener);
+			this.label.get(i).addMouseWheelListener(listener);
+		}
+	}
+	
+	/*为一个标签设置key监听器*/
+	public void SetKeyListener(FlyKeyListener listener,int index)
+	{
+		this.label.get(index).addKeyListener(listener);
+	}
+	
+	/*为一个标签设置key监听器*/
+	public void SetKeyListener(FlyKeyListener listener)
+	{
+		for(int i = 0;i < this.label.size();i++)
+			this.label.get(i).addKeyListener(listener);
+	}
+	
+	
+	
 	/*添加一个标签*/	//返回标签索引
 	public int AddLabel(){label.add(new JLabel());return label.size() - 1;}
 	

@@ -11,6 +11,41 @@ public class FlyTextFieldManager
 	
 	public FlyTextFieldManager(){text_field = new ArrayList<JTextField>();}
 	
+	
+	/*为一个文本编辑框设置鼠标监听器*/
+	public void SetMouseListener(FlyMouseListener listener,int index)
+	{
+		this.text_field.get(index).addMouseListener(listener);
+		this.text_field.get(index).addMouseMotionListener(listener);
+		this.text_field.get(index).addMouseWheelListener(listener);
+	}
+	
+	/*为所以文本编辑框设置鼠标监听器*/
+	public void SetMouseListener(FlyMouseListener listener)
+	{
+		for(int i = 0;i < this.text_field.size();i++)
+		{
+			this.text_field.get(i).addMouseListener(listener);
+			this.text_field.get(i).addMouseMotionListener(listener);
+			this.text_field.get(i).addMouseWheelListener(listener);
+		}
+	}
+	
+	/*为一个文本编辑框设置key监听器*/
+	public void SetKeyListener(FlyKeyListener listener,int index)
+	{
+		this.text_field.get(index).addKeyListener(listener);
+	}
+	
+	/*为一个文本编辑框设置key监听器*/
+	public void SetKeyListener(FlyKeyListener listener)
+	{
+		for(int i = 0;i < this.text_field.size();i++)
+			this.text_field.get(i).addKeyListener(listener);
+	}
+	
+	
+	
 	/*添加一个文本编辑框*/
 	public int AddTextField(){text_field.add(new JTextField());return text_field.size() - 1;}
 	
