@@ -34,7 +34,7 @@ public class 菜单栏
 	/*添加多个菜单*/
 	public int[] 添加菜单(int 数量)//返回菜单索引
 	{String[] title = new String[数量];return this.添加菜单(title);}
-	public int[] 添加菜单(String[] 菜单文本)//返回菜单索引
+	public int[] 添加菜单(String... 菜单文本)//返回菜单索引
 	{
 		int[] 菜单索引 = new int[菜单文本.length];//各个菜单的索引
 		
@@ -59,7 +59,7 @@ public class 菜单栏
 	/*添加多个菜单项*/
 	public int[] 添加菜单项(int 菜单索引,int 数量)// menu_index 为菜单索引   n 为菜单项数量
 	{String[] 文本 = new String[数量];return 添加菜单项(菜单索引,文本);}
-	public int[] 添加菜单项(int 菜单索引,String[] 菜单项文本)
+	public int[] 添加菜单项(int 菜单索引,String... 菜单项文本)
 	{
 		int[] 索引 = new int[菜单项文本.length];//各个菜单的索引
 		

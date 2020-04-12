@@ -18,16 +18,7 @@ public class TileMap
     
     public short[] data;
 	
-	public TileMap()
-	{
-		width = 0;
-		height = 0;
-		tile_width = 0;
-		tile_height = 0;
-		tile_count = 0;
-		tile_image_path = new String[0];
-		data = null;
-	}
+	public TileMap(){this(0,0,0,0,0,null,null);}
 	
 	public TileMap(int width,int height,
 			int tile_width,int tile_height,
@@ -55,12 +46,16 @@ public class TileMap
 		
 		writer.writeShort(map.tile_count);
 		
-		for(int i = 0;i < map.tile_image_path.length;i++)
+		if(map.tile_count > 0)
 		{
-			short str_n = (short) map.tile_image_path[i].length();
-			writer.writeShort(str_n);
-			writer.writeChars(map.tile_image_path[i]);
+			for(int i = 0;i < map.tile_image_path.length;i++)
+			{
+				short str_n = (short) map.tile_image_path[i].length();
+				writer.writeShort(str_n);
+				writer.writeChars(map.tile_image_path[i]);
+			}
 		}
+		
 		
 		for(int i = 0;i < map.width * map.height;i++)
 		{

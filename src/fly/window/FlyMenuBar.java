@@ -34,7 +34,7 @@ public class FlyMenuBar
 	/*添加多个菜单*/
 	public int[] AddMenus(int n)//返回菜单索引
 	{String[] title = new String[n];return this.AddMenus(title);}
-	public int[] AddMenus(String[] menu_text)//返回菜单索引
+	public int[] AddMenus(String... menu_text)//返回菜单索引
 	{
 		int[] menu_index = new int[menu_text.length];//各个菜单的索引
 		
@@ -59,7 +59,7 @@ public class FlyMenuBar
 	/*添加多个菜单项*/
 	public int[] AddMenuItems(int menu_index,int n)// menu_index 为菜单索引   n 为菜单项数量
 	{String[] text = new String[n];return AddMenuItems(menu_index,text);}
-	public int[] AddMenuItems(int menu_index,String[] menu_item_text)
+	public int[] AddMenuItems(int menu_index,String... menu_item_text)
 	{
 		int[] index = new int[menu_item_text.length];//各个菜单的索引
 		

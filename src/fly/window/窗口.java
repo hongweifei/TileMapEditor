@@ -1,5 +1,6 @@
 package fly.window;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.LayoutManager;
@@ -59,7 +60,7 @@ public class 窗口
 	public void 设置菜单栏(菜单栏 menu_bar)
 	{this.window.setJMenuBar(menu_bar.获取菜单栏());}
 	
-	/*获取窗口*/
+	/*获取JFrame*/
 	public JFrame 获取窗口() {return window;}
 	
 	
@@ -80,6 +81,7 @@ public class 窗口
 	{this.添加鼠标监听器(监听器);this.添加key监听器(监听器);this.window.addWindowListener(监听器);}
 	
 	/*添加组件*/
+	public void 添加(Component comp){this.window.getContentPane().add(comp);}
 	public void 添加(Widget widget){this.window.getContentPane().add(widget.Get());}
 	public void 添加(组件 widget){this.window.getContentPane().add(widget.获取());}
 }

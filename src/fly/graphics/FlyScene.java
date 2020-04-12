@@ -38,7 +38,7 @@ public class FlyScene extends JPanel
 	public FlyRenderer GetRenderer() {return this.renderer;}
 	
 	/*将场景添加至窗口*/
-	public void AddToWindow(Window w){w.GetFrame().add(this);w.SetVisble(true);}
+	public void AddToWindow(Window w){w.GetFrame().add(this);w.SetVisible(true);}
 	public void AddToWindow(窗口 w){w.获取窗口().add(this);w.设置可视(true);}
 }
 

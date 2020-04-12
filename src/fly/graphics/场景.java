@@ -38,7 +38,7 @@ public class 场景 extends JPanel
 	public 渲染器 获取渲染器() {return this.渲染器1;}
 	
 	/*将场景添加至窗口*/
-	public void 添加至窗口(Window w){w.GetFrame().add(this);w.SetVisble(true);}
+	public void 添加至窗口(Window w){w.GetFrame().add(this);w.SetVisible(true);}
 	public void 添加至窗口(窗口 w){w.获取窗口().add(this);w.设置可视(true);}
 }
 
