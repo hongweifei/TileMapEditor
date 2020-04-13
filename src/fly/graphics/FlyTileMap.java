@@ -11,21 +11,32 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * 瓦片地图
+ * */
 public class FlyTileMap
 {
-	public short width;
-	public short height;
-    public short tile_width;
-    public short tile_height;
-    
-    public short tile_count;
-    public String[] tile_image_path;
-    
-    public short[] data;
-	
+	public short width;///< 地图宽度
+	public short height;///< 地图高度
+    public short tile_width;///< 瓦片宽度
+    public short tile_height;///< 瓦片高度
+
+    public short tile_count;///< 瓦片地图的图像数量
+    public String[] tile_image_path;///< 瓦片地图内的图片路径
+
+    public short[] data;///< 瓦片地图数据
+
 	public FlyTileMap(){this(0,0,0,0,0,null,null);}
-	
+
+	/**
+	 * @param width 地图宽度
+	 * @param height 地图高度
+	 * @param tile_width 瓦片宽度
+	 * @param tile_height 瓦片高度
+	 * @param tile_count 瓦片地图的图像数量
+	 * @param tile_image_path 瓦片地图内的图片路径
+	 * @param data 瓦片地图数据
+	 * */
 	public FlyTileMap(int width,int height,
 			int tile_width,int tile_height,
 			int tile_count,String[] tile_image_path,
@@ -39,27 +50,30 @@ public class FlyTileMap
 		this.tile_image_path = tile_image_path;
 		this.data = data;
 	}
-	
-	/*渲染地图
-	 * width 渲染宽度
-	 * height 渲染高度
+
+	/**
+	 * 渲染地图
+	 * @param width 渲染宽度
+	 * @param height 渲染高度
 	 * */
 	public void Render(FlyRenderer renderer,Graphics g,int width,int height)
 	{this.Render(renderer, g, 0, 0, width, height);}
-	
-	
-	/*渲染地图
-	 * width 渲染宽度
-	 * height 渲染高度
+
+
+	/**
+	 * 渲染地图
+	 * @param width 渲染宽度
+	 * @param height 渲染高度
 	 * */
 	public void Render(渲染器 renderer,Graphics g,int width,int height)
 	{this.Render(renderer, g,0,0, width, height);}
-	
-	/*渲染地图
-	 * x 地图左上角横坐标
-	 * y 地图左上角纵坐标
-	 * width 渲染宽度
-	 * height 渲染高度
+
+	/**
+	 * 渲染地图
+	 * @param x 地图左上角横坐标
+	 * @param y 地图左上角纵坐标
+	 * @param width 渲染宽度
+	 * @param height 渲染高度
 	 * */
 	public void Render(FlyRenderer renderer,Graphics g,int x,int y,int width,int height)
 	{
@@ -69,7 +83,7 @@ public class FlyTileMap
 			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
 			catch (IOException e) {e.printStackTrace();}
 		}
-		
+
 		for(int i = 0;i < this.height;i++)
 		{
 			for(int j = 0;j < this.width;j++)
@@ -77,22 +91,23 @@ public class FlyTileMap
 				int n = j + i * this.width;
 				if(this.data[n] > 0)
 				{
-					renderer.DrawImage(g, img[this.data[n] - 1], x + j * width, 
+					renderer.DrawImage(g, img[this.data[n] - 1], x + j * width,
 								y + i * height, width, height,null);
 				}
-				
-				renderer.DrawRect(g, x + j * width, y + i * height, 
+
+				renderer.DrawRect(g, x + j * width, y + i * height,
 						width, height);
 			}
 		}
 	}
-	
-	
-	/*渲染地图
-	 * x 地图左上角横坐标
-	 * y 地图左上角纵坐标
-	 * width 渲染宽度
-	 * height 渲染高度
+
+
+	/**
+	 * 渲染地图
+	 * @param x 地图左上角横坐标
+	 * @param y 地图左上角纵坐标
+	 * @param width 渲染宽度
+	 * @param height 渲染高度
 	 * */
 	public void Render(渲染器 renderer,Graphics g,int x,int y,int width,int height)
 	{
@@ -102,7 +117,7 @@ public class FlyTileMap
 			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
 			catch (IOException e) {e.printStackTrace();}
 		}
-		
+
 		for(int i = 0;i < this.height;i++)
 		{
 			for(int j = 0;j < this.width;j++)
@@ -110,32 +125,37 @@ public class FlyTileMap
 				int n = j + i * this.width;
 				if(this.data[n] > 0)
 				{
-					renderer.绘制图像(g, img[this.data[n] - 1], x + j * width, 
+					renderer.绘制图像(g, img[this.data[n] - 1], x + j * width,
 								y + i * height, width, height,null);
 				}
-				
-				renderer.绘制矩形(g, x + j * width, y + i * height, 
+
+				renderer.绘制矩形(g, x + j * width, y + i * height,
 						width, height);
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	/*写出地图*/
+
+
+
+
+
+	/**
+	 * 写出地图
+	 *
+	 * @param path 写出的地图的路径
+	 * @param map 要写出的地图
+	 * */
 	public static void WriteMap(String path,FlyTileMap map) throws IOException
 	{
 		DataOutputStream writer = new DataOutputStream(new FileOutputStream (path));//创建地图文件
-		
+
 		writer.writeShort(map.width);
 		writer.writeShort(map.height);
 		writer.writeShort(map.tile_width);
 		writer.writeShort(map.tile_height);
-		
+
 		writer.writeShort(map.tile_count);
-		
+
 		if(map.tile_count > 0)
 		{
 			for(int i = 0;i < map.tile_image_path.length;i++)
@@ -145,8 +165,8 @@ public class FlyTileMap
 				writer.writeChars(map.tile_image_path[i]);
 			}
 		}
-		
-		
+
+
 		for(int i = 0;i < map.width * map.height;i++)
 		{
 			if(map.data == null)
@@ -162,48 +182,54 @@ public class FlyTileMap
 				writer.writeShort(map.data[i]);
 		}
 	}
-	
-	/*读取地图*/
+
+	/**
+	 * 读取地图
+	 *
+	 * @param path 要读取的地图的路径
+	 *
+	 * @return 返回读到的地图
+	 * */
 	public static FlyTileMap ReadMap(String path) throws IOException
 	{
 		DataInputStream reader = new DataInputStream(new FileInputStream (path));//打开地图文件
-		
+
 		FlyTileMap map = new FlyTileMap();
-		
+
 		map.width = reader.readShort();
 		map.height = reader.readShort();
 		map.tile_width = reader.readShort();
 		map.tile_height = reader.readShort();
-		
+
 		map.tile_count = reader.readShort();
 		map.tile_image_path = new String[map.tile_count];
-		
+
 		for(int i = 0;i < map.tile_count;i++)
 		{
 			/*读取图片路径字节数*/
 			short image_path_n = reader.readShort();
-			
+
 			/*读取图片路径*/
 			char[] image_path = new char[image_path_n];
 			for(int j = 0;j < image_path_n;j++)
 			{
 				image_path[j] = reader.readChar();
 			}
-			
+
 			map.tile_image_path[i] = new String(image_path);
 		}
-		
+
 		map.data = new short[map.width * map.height];
-		
+
 		for(int i = 0;i < map.data.length;i++)
 		{
 			map.data[i] = reader.readShort();
 		}
-		
-		
+
+
 		return map;
 	}
-	
+
 }
 
 
@@ -260,10 +286,10 @@ void WriteTileMap(const char *path,TileMapInformation map_information,TileMapDat
             image_path[i] = va_arg(image_path_list,char*);//取出图片路径
             image_path_str_n[i] = strlen(image_path[i]);//计算图片路径字符串大小
         }
-        
+
         va_end(image_path_list);
     }
-    
+
     //开始写出地图
     FILE *fp = fopen(path,"w");
 
@@ -278,7 +304,7 @@ void WriteTileMap(const char *path,TileMapInformation map_information,TileMapDat
         fwrite(&image_path_char_n[i],1,sizeof(short),fp);//写出瓦片图片路径字符
         fwrite(&image_path[i],1,sizeof(char) * image_path_char_n[i],fp);
     }
-    
+
     fwrite(map_data.data,sizeof(short),map_information.width * map_information.height,fp);
 
     fclose(fp);
@@ -315,7 +341,7 @@ TileMap ReadTileMap(const char *path)
             fread(&tile_sets.tile_image_path[i],sizeof(char),image_path_str_n,fp);
         }
     }
-    
+
     int i;
     for (i = 0; i < tile_map_information.width * tile_map_information.height; i++)
     {
@@ -323,7 +349,7 @@ TileMap ReadTileMap(const char *path)
     }
 
     fclose(fp);
-    
+
     tile_map.information = tile_map_information;
     tile_map.sets = tile_sets;
     tile_map.map_data = tile_map_data;
