@@ -19,9 +19,9 @@ import fly.window.widget.组件;
 
 public class FlyDialog
 {
-	private JDialog dialog;
-	
-	/*初始化*/
+	private JDialog dialog;///<
+
+	/**初始化*/
 	public FlyDialog()
 	{
 		dialog = new JDialog();
@@ -31,7 +31,7 @@ public class FlyDialog
 	}
 	public FlyDialog(String title){this();dialog.setTitle(title);}
 	public FlyDialog(String title,int width,int height){this(title);dialog.setSize(width,height);}
-	
+
 	/*初始化*/
 	public FlyDialog(Window window)
 	{
@@ -46,7 +46,7 @@ public class FlyDialog
 		this(window,title);
 		dialog.setSize(width, height);
 	}
-	
+
 	/*初始化*/
 	public FlyDialog(窗口 window)
 	{
@@ -61,67 +61,134 @@ public class FlyDialog
 		this(window,title);
 		dialog.setSize(width, height);
 	}
-	
-	/*设置窗口可视*/
+
+	/**
+	 * 设置窗口可视
+	 *
+	 * @param b b若为真，会让这个Dialog可视
+	 * */
 	public void SetVisible(boolean b){this.dialog.setVisible(b);}
-	/*设置窗口布局*/
+
+	/**
+	 * 设置窗口布局
+	 *
+	 * @param manager 要设置的布局
+	 * */
 	public void SetLayout(LayoutManager manager) {this.dialog.setLayout(manager);}
-	
-	/*获取JDialog*/
+
+	/**
+	 * 获取JDialog
+	 *
+	 * @return 返回JDialog
+	 * */
 	public JDialog GetDialog(){return this.dialog;}
-	
-	
-	/*设置窗口图标*/
+
+
+	/**
+	 * 设置窗口图标
+	 *
+	 * @param path 图标路径
+	 * */
 	public void SetIcon(String path) throws IOException
 	{
 		Image img = ImageIO.read(this.dialog.getClass().getResource(path));//读取路径图片
 		this.dialog.setIconImage(img);//设置图片为窗口图标
 	}
-	/*设置窗口图标*/
+
+	/**
+	 * 设置窗口图标
+	 *
+	 * @param input
+	 * */
 	public void SetIcon(URL input) throws IOException
 	{
 		Image img = ImageIO.read(input);//读取图片
 		this.dialog.setIconImage(img);//设置图片为窗口图标
 	}
-	/*设置窗口图标*/
+
+	/**
+	 * 设置窗口图标
+	 *
+	 * @param img 图标图像
+	 * */
 	public void SetIcon(Image img){this.dialog.setIconImage(img);}
-	
-	
-	/*设置菜单栏*/
+
+
+	/**
+	 * 设置菜单栏
+	 *
+	 * @param menu_bar 要设置的菜单栏
+	 * */
 	public void SetMenuBar(MenuBar menu_bar)
 	{this.dialog.setJMenuBar(menu_bar.GetMenuBar());}
-	
-	/*设置Fly菜单栏*/
+
+	/**
+	 * 设置Fly菜单栏
+	 *
+	 * @param menu_bar 要设置的菜单栏
+	 * */
 	public void SetMenuBar(FlyMenuBar menu_bar)
 	{this.dialog.setJMenuBar(menu_bar.GetMenuBar());}
-	
-	/*设置菜单栏*/
+
+	/**
+	 * 设置菜单栏
+	 *
+	 * @param menu_bar 要设置的菜单栏
+	 * */
 	public void SetMenuBar(菜单栏 menu_bar)
 	{this.dialog.setJMenuBar(menu_bar.获取菜单栏());}
-	
-	
-	/*添加鼠标监听器*/
+
+
+	/**
+	 * 添加鼠标监听器
+	 *
+	 * @param listener 要设置的监听器
+	 * */
 	public void AddMouseListener(FlyMouseListener listener)
 	{
 		this.dialog.addMouseListener(listener);
 		this.dialog.addMouseMotionListener(listener);
 		this.dialog.addMouseWheelListener(listener);
 	}
-	
-	/*添加key监听器*/
+
+	/**
+	 * 添加key监听器
+	 *
+	 * @param listener 要设置的监听器
+	 * */
 	public void AddKeyListener(FlyKeyListener listener)
 	{this.dialog.addKeyListener(listener);}
-	
-	/*添加窗口监听器*/
+
+	/**
+	 * 添加窗口监听器
+	 *
+	 * @param listener 要设置的监听器
+	 * */
 	public void AddWindowListener(FlyWindowListener listener)
 	{this.AddMouseListener(listener);this.AddKeyListener(listener);this.dialog.addWindowListener(listener);}
-	
-	
-	/*window.Add*/
+
+
+	/**
+	 * 给Dialog添加组件
+	 *
+	 * @param comp 要添加的组件
+	 * */
 	public void Add(Component comp){this.dialog.getContentPane().add(comp);}
+
+	/**
+	 * 给Dialog添加组件
+	 *
+	 * @param widget 要添加的组件
+	 * */
 	public void Add(FlyWidget widget){this.dialog.getContentPane().add(widget.Get());}
+
+	/**
+	 * 给Dialog添加组件
+	 *
+	 * @param widget 要添加的组件
+	 * */
 	public void Add(组件 widget){this.dialog.getContentPane().add(widget.获取());}
-	
+
 }
 
 
