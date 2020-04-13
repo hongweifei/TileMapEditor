@@ -1,6 +1,11 @@
 package fly.graphics;
 
 /**
+ * @file FlyCamera.java
+ * @author Fly
+ */
+
+/**
  * 摄像机类
  * */
 public class FlyCamera

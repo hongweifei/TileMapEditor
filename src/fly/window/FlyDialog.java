@@ -17,6 +17,12 @@ import fly.window.listener.FlyWindowListener;
 import fly.window.widget.FlyWidget;
 import fly.window.widget.组件;
 
+/**
+ * @file FlyDialog.java
+ * @author Fly
+ */
+
+
 public class FlyDialog
 {
 	private JDialog dialog;///<

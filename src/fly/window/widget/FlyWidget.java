@@ -4,6 +4,12 @@ import java.awt.Component;
 
 
 /**
+ * @file FlyWidget.java
+ * @author Fly
+ */
+
+
+/**
  * 组件类
  * */
 public class FlyWidget

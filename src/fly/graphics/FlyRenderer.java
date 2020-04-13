@@ -1,9 +1,20 @@
 package fly.graphics;
 
+
+
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
+
+
+
+/**
+ * @file FlyRenderer.java
+ * @author Fly
+ */
+
 
 /*
  * 图像读取

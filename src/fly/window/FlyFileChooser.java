@@ -11,6 +11,12 @@ import fly.window.widget.组件;
 
 
 /**
+ * @file FlyFileChooser.java
+ * @author Fly
+ */
+
+
+/**
  * 文件选择器类
  * */
 public class FlyFileChooser

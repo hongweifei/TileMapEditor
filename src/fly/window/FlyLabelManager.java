@@ -10,6 +10,12 @@ import fly.window.listener.FlyKeyListener;
 import fly.window.listener.FlyMouseListener;
 
 
+/**
+ * @file FlyLabelManager.java
+ * @author Fly
+ */
+
+
 /*String转int
  * (1)Integer.parseInt(str)
  * (2)Integer.valueOf(str).intValue()
