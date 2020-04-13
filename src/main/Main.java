@@ -45,6 +45,8 @@ public class Main
 	static FlyTileMap map = null;
 	static Image[] img = null;
 	static String tile_map_path = null;
+
+	static boolean map_can_render = true;
 	
 	static FlyCamera map_camera = new FlyCamera();
 	static int map_render_width = 16;
@@ -220,6 +222,8 @@ public class Main
 						{
 							if(now_map == map && list.Get().isSelectionEmpty() == false)
 							{
+								map_can_render = false;
+
 								for(int i = 0;i < map.height;i++)
 								{
 									for(int j = 0;j < map.width;j++)
@@ -228,9 +232,11 @@ public class Main
 										
 										if(map.data[n] == list.Get().getSelectedIndex() + 1)
 											map.data[n] = 0;
+										else if(map.data[n] > list.Get().getSelectedIndex() + 1)
+											map.data[n]--;
 									}
 								}
-								
+
 								map.tile_count--;
 								
 								String[] image_path = map.tile_image_path;
@@ -246,6 +252,8 @@ public class Main
 									
 									j++;
 								}
+
+								map_can_render = true;
 							}
 							else if(now_map != map)
 								JOptionPane.showOptionDialog(null, 
@@ -253,6 +261,8 @@ public class Main
 								JOptionPane.ERROR_MESSAGE, null, null, null);
 							
 							移除图片窗口.SetVisible(false);
+
+
 						}
 					});
 					
@@ -318,7 +328,13 @@ public class Main
 			{
 				mouse_last_x = e.getX();
 				mouse_last_y = e.getY();
-				
+			}
+
+			@Override public void mousePressed(MouseEvent e)
+			{
+				mouse_last_x = e.getX();
+				mouse_last_y = e.getY();
+
 				if(map != null && e.getButton() == MouseEvent.BUTTON1)
 				{
 					for(int i = 0;i < map.height;i++)
@@ -326,11 +342,11 @@ public class Main
 						for(int j = 0;j < map.width;j++)
 						{
 							int n = j + i * map.width;
-							
-							if(Main.Collision(e.getX(), e.getY(), 
-									1, 1, 
+
+							if(Main.Collision(e.getX(), e.getY(),
+									1, 1,
 									map_camera.look_at_x + j * map_render_width,
-									map_camera.look_at_y + i * map_render_height, 
+									map_camera.look_at_y + i * map_render_height,
 									map_render_width, map_render_height))
 							{
 								if(map.data[n] < map.tile_count)
@@ -346,11 +362,11 @@ public class Main
 						for(int j = 0;j < map.width;j++)
 						{
 							int n = j + i * map.width;
-							
-							if(Main.Collision(e.getX(), e.getY(), 
-									1, 1, 
+
+							if(Main.Collision(e.getX(), e.getY(),
+									1, 1,
 									map_camera.look_at_x + j * map_render_width,
-									map_camera.look_at_y + i * map_render_height, 
+									map_camera.look_at_y + i * map_render_height,
 									map_render_width, map_render_height))
 							{
 								if(map.data[n] > 0)
@@ -359,12 +375,6 @@ public class Main
 						}
 					}
 				}
-			}
-
-			@Override public void mousePressed(MouseEvent e)
-			{
-				mouse_last_x = e.getX();
-				mouse_last_y = e.getY();
 			}
 			
 			@Override public void mouseReleased(MouseEvent e){}
@@ -462,7 +472,7 @@ public class Main
 				渲染器 渲染器1 = 场景1.获取渲染器();
 				Graphics g = (Graphics)物体;
 				
-				if(map != null)
+				if(map != null && map_can_render)
 					map.Render(渲染器1, g,map_camera.look_at_x,map_camera.look_at_y,
 					map_render_width,map_render_height);
 			}
