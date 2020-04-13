@@ -9,6 +9,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuKeyListener;
 
+import fly.window.listener.FlyActionAndChangeListener;
+import fly.window.widget.FlyWidget;
+import fly.window.widget.组件;
+
 public class FlyPopupMenu
 {
 	private JPopupMenu popup_menu;
@@ -27,7 +31,7 @@ public class FlyPopupMenu
 	public void Show(Component invoker, int x, int y){popup_menu.show(invoker, x, y);}
 	public void Show(Window window, int x, int y){popup_menu.show(window.GetFrame(), x, y);}
 	public void Show(窗口 window, int x, int y){popup_menu.show(window.获取窗口(), x, y);}
-	public void Show(Widget widget, int x, int y){popup_menu.show(widget.Get(), x, y);}
+	public void Show(FlyWidget widget, int x, int y){popup_menu.show(widget.Get(), x, y);}
 	public void Show(组件 widget, int x, int y){popup_menu.show(widget.获取(), x, y);}
 	
 	

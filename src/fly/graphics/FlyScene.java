@@ -8,9 +8,11 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
-import fly.window.FlyWindowListener;
 import fly.window.Window;
 import fly.window.窗口;
+import fly.window.listener.FlyKeyListener;
+import fly.window.listener.FlyMouseListener;
+import fly.window.listener.FlyWindowListener;
 
 public class FlyScene extends JPanel
 {
@@ -43,18 +45,16 @@ public class FlyScene extends JPanel
 	public FlyRenderer GetRenderer() {return this.renderer;}
 	
 	/*设置鼠标监听器*/
-	public void SetMouseListener(MouseListener listener){this.addMouseListener(listener);}
+	public void SetMouseListener(FlyMouseListener listener)
+	{
+		this.addMouseListener(listener);
+		this.addMouseMotionListener(listener);
+		this.addMouseWheelListener(listener);
+	}
 	
-	/*设置鼠标motion监听器*/
-	public void SetMouseMotionListener(MouseMotionListener listener)
-	{this.addMouseMotionListener(listener);}
-	
-	/*设置鼠标wheel监听器*/
-	public void SetMouseWheelListener(MouseWheelListener listener)
-	{this.addMouseWheelListener(listener);}
 	
 	/*设置key监听器*/
-	public void SetKeyListener(KeyListener listener){this.addKeyListener(listener);}
+	public void SetKeyListener(FlyKeyListener listener){this.addKeyListener(listener);}
 	
 	/*设置鼠标监听器和key监听器*/
 	public void SetMouseAndKeyListener(FlyWindowListener listener)

@@ -6,6 +6,22 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import fly.window.listener.FlyKeyListener;
+import fly.window.listener.FlyMouseListener;
+
+
+/*String转int
+ * (1)Integer.parseInt(str)
+ * (2)Integer.valueOf(str).intValue()
+ * */
+
+/*int转String
+ * (1)String.valueOf(num)
+ * (2)Integer.toString(num)
+ * */
+
+
+
 public class FlyLabelManager
 {
 	private ArrayList<JLabel> label;

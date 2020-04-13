@@ -1,10 +1,14 @@
 package fly.window;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.event.ChangeListener;
+
+import fly.window.listener.FlyActionAndChangeListener;
 
 public class FlyMenuBar
 {
@@ -80,8 +84,17 @@ public class FlyMenuBar
 		menu_item.get(menu_item_index).addActionListener(listener);
 		menu_item.get(menu_item_index).addChangeListener(listener);
 	}
+	
+	
+	public void MenuItemAddListener(int menu_item_index,ActionListener listener)
+	{menu_item.get(menu_item_index).addActionListener(listener);}
+	
+	public void MenuItemAddListener(int menu_item_index,ChangeListener listener)
+	{menu_item.get(menu_item_index).addChangeListener(listener);}
 
 	
+	
+	/*获取各项属性*/
 	public JMenuBar GetMenuBar(){return menu_bar;}
 	
 	public JMenu GetMenu(int menu_index){return menu.get(menu_index);}
@@ -96,7 +109,7 @@ public class FlyMenuBar
 				break;//结束循环
 			}
 		}
-		return menu.get(index);//返回索引
+		return menu.get(index);//返回菜单
 	}
 	
 	public JMenuItem GetMenuItem(int menu_item_index){return menu_item.get(menu_item_index);}
@@ -113,6 +126,43 @@ public class FlyMenuBar
 		}
 		return menu_item.get(index);//返回索引
 	}
+	
+	
+	
+	/*通过菜单文本找到菜单索引*/
+	public int GetMenuIndex(String menu_text)
+	{
+		int index = 0;//菜单索引
+		for(int i = 0;i < menu.size();i++)//遍历菜单文本
+		{
+			if(menu.get(i).getText() == menu_text)//若菜单文本是要找的文本，结束循环
+			{
+				index = i;//索引记录
+				break;//结束循环
+			}
+		}
+		return index;//返回菜单
+	}
+	
+	
+	/*通过菜单项文本找到菜单索引*/
+	public int GetMenuItemIndex(String menu_item_text)
+	{
+		int index = 0;//菜单项索引
+		for(int i = 0;i < menu_item.size();i++)//遍历菜单项文本
+		{
+			if(menu_item.get(i).getText() == menu_item_text)//若菜单项文本是要找的文本，结束循环
+			{
+				index = i;//索引记录
+				break;//结束循环
+			}
+		}
+		return index;//返回索引
+	}
+	
+	
+	
+	
 }
 
 

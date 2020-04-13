@@ -11,6 +11,12 @@ import javax.imageio.ImageIO;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import fly.window.listener.FlyKeyListener;
+import fly.window.listener.FlyMouseListener;
+import fly.window.listener.FlyWindowListener;
+import fly.window.widget.FlyWidget;
+import fly.window.widget.组件;
+
 public class FlyDialog
 {
 	private JDialog dialog;
@@ -113,7 +119,7 @@ public class FlyDialog
 	
 	/*window.Add*/
 	public void Add(Component comp){this.dialog.getContentPane().add(comp);}
-	public void Add(Widget widget){this.dialog.getContentPane().add(widget.Get());}
+	public void Add(FlyWidget widget){this.dialog.getContentPane().add(widget.Get());}
 	public void Add(组件 widget){this.dialog.getContentPane().add(widget.获取());}
 	
 }

@@ -10,6 +10,12 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import fly.window.listener.FlyKeyListener;
+import fly.window.listener.FlyMouseListener;
+import fly.window.listener.FlyWindowListener;
+import fly.window.widget.FlyWidget;
+import fly.window.widget.组件;
+
 public class 窗口
 {
 	private JFrame window = new JFrame();
@@ -82,7 +88,7 @@ public class 窗口
 	
 	/*添加组件*/
 	public void 添加(Component comp){this.window.getContentPane().add(comp);}
-	public void 添加(Widget widget){this.window.getContentPane().add(widget.Get());}
+	public void 添加(FlyWidget widget){this.window.getContentPane().add(widget.Get());}
 	public void 添加(组件 widget){this.window.getContentPane().add(widget.获取());}
 }
 

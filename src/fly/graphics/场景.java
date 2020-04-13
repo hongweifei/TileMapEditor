@@ -8,9 +8,11 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
-import fly.window.FlyWindowListener;
 import fly.window.Window;
 import fly.window.窗口;
+import fly.window.listener.FlyKeyListener;
+import fly.window.listener.FlyMouseListener;
+import fly.window.listener.FlyWindowListener;
 
 public class 场景 extends JPanel
 {
@@ -44,18 +46,15 @@ public class 场景 extends JPanel
 	
 	
 	/*设置鼠标监听器*/
-	public void 设置鼠标监听器(MouseListener 监听器){this.addMouseListener(监听器);}
-	
-	/*设置鼠标motion监听器*/
-	public void 设置鼠标移动监听器(MouseMotionListener 监听器)
-	{this.addMouseMotionListener(监听器);}
-	
-	/*设置鼠标wheel监听器*/
-	public void SetMouseWheelListener(MouseWheelListener 监听器)
-	{this.addMouseWheelListener(监听器);}
+	public void 设置鼠标监听器(FlyMouseListener 监听器)
+	{
+		this.addMouseListener(监听器);
+		this.addMouseMotionListener(监听器);
+		this.addMouseWheelListener(监听器);
+	}
 	
 	/*设置key监听器*/
-	public void 设置按键监听器(KeyListener 监听器){this.addKeyListener(监听器);}
+	public void 设置按键监听器(FlyKeyListener 监听器){this.addKeyListener(监听器);}
 	
 	/*设置鼠标监听器和key监听器*/
 	public void 设置鼠标和按键监听器(FlyWindowListener 监听器)

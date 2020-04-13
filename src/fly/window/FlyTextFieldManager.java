@@ -5,11 +5,30 @@ import java.util.ArrayList;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import fly.window.listener.FlyKeyListener;
+import fly.window.listener.FlyMouseListener;
+
+
+/*String转int
+ * (1)Integer.parseInt(str)
+ * (2)Integer.valueOf(str).intValue()
+ * */
+
+/*int转String
+ * (1)String.valueOf(num)
+ * (2)Integer.toString(num)
+ * */
+
+
 public class FlyTextFieldManager
 {
 	private ArrayList<JTextField> text_field;
 	
 	public FlyTextFieldManager(){text_field = new ArrayList<JTextField>();}
+	
+	
+	/*获取文本编辑框*/
+	public JTextField Get(int index) {return this.text_field.get(index);}
 	
 	
 	/*为一个文本编辑框设置鼠标监听器*/

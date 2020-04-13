@@ -1,10 +1,14 @@
 package fly.window;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.event.ChangeListener;
+
+import fly.window.listener.FlyActionAndChangeListener;
 
 public class 菜单栏
 {
@@ -70,6 +74,7 @@ public class 菜单栏
 	public void 插入分割线(int 菜单索引,int 分割线索引)
 	{menu.get(菜单索引).insertSeparator(分割线索引);}
 	
+	/*添加监听器*/
 	public void 添加监听器(int 菜单项索引,FlyActionAndChangeListener 监听器)
 	{
 		/*给菜单项添加ActionListener和ChangeListener*/
@@ -77,7 +82,14 @@ public class 菜单栏
 		menu_item.get(菜单项索引).addChangeListener(监听器);
 	}
 	
+	public void 添加监听器(int 菜单项索引,ActionListener 监听器)
+	{menu_item.get(菜单项索引).addActionListener(监听器);}
 	
+	public void 添加监听器(int 菜单项索引,ChangeListener 监听器)
+	{menu_item.get(菜单项索引).addChangeListener(监听器);}
+	
+	
+	/*获取各项属性*/
 	public JMenuBar 获取菜单栏(){return menu_bar;}
 	
 	public JMenu 获取菜单(int 菜单索引){return menu.get(菜单索引);}
@@ -109,4 +121,54 @@ public class 菜单栏
 		}
 		return menu_item.get(索引);//返回索引
 	}
+	
+	
+	
+	
+	/*通过菜单文本找到菜单索引*/
+	public int 获取菜单索引(String menu_text)
+	{
+		int index = 0;//菜单索引
+		for(int i = 0;i < menu.size();i++)//遍历菜单文本
+		{
+			if(menu.get(i).getText() == menu_text)//若菜单文本是要找的文本，结束循环
+			{
+				index = i;//索引记录
+				break;//结束循环
+			}
+		}
+		return index;//返回菜单
+	}
+	
+	
+	/*通过菜单项文本找到菜单索引*/
+	public int 获取菜单项索引(String menu_item_text)
+	{
+		int index = 0;//菜单项索引
+		for(int i = 0;i < menu_item.size();i++)//遍历菜单项文本
+		{
+			if(menu_item.get(i).getText() == menu_item_text)//若菜单项文本是要找的文本，结束循环
+			{
+				index = i;//索引记录
+				break;//结束循环
+			}
+		}
+		return index;//返回索引
+	}
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+

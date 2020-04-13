@@ -6,6 +6,9 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import fly.window.widget.FlyWidget;
+import fly.window.widget.组件;
+
 public class FlyFileChooser
 {
 	private JFileChooser file_chooser;
@@ -57,7 +60,7 @@ public class FlyFileChooser
 	{return this.file_chooser.showDialog(window.GetFrame(), 按钮文本);}
 	public int ShowDialog(窗口 window,String 按钮文本)
 	{return this.file_chooser.showDialog(window.获取窗口(), 按钮文本);}
-	public int ShowDialog(Widget widget,String button_text)
+	public int ShowDialog(FlyWidget widget,String button_text)
 	{return this.file_chooser.showDialog(widget.Get(), button_text);}
 	public int ShowDialog(组件 widget,String button_text)
 	{return this.file_chooser.showDialog(widget.获取(), button_text);}
@@ -69,7 +72,7 @@ public class FlyFileChooser
 	{return this.file_chooser.showOpenDialog(window.GetFrame());}
 	public int ShowOpenDialog(窗口 window)
 	{return this.file_chooser.showOpenDialog(window.获取窗口());}
-	public int ShowOpenDialog(Widget widget)
+	public int ShowOpenDialog(FlyWidget widget)
 	{return this.file_chooser.showOpenDialog(widget.Get());}
 	public int ShowOpenDialog(组件 widget)
 	{return this.file_chooser.showOpenDialog(widget.获取());}
@@ -81,7 +84,7 @@ public class FlyFileChooser
 	{return this.file_chooser.showSaveDialog(window.GetFrame());}
 	public int ShowSaveDialog(窗口 window)
 	{return this.file_chooser.showSaveDialog(window.获取窗口());}
-	public int ShowSaveDialog(Widget widget)
+	public int ShowSaveDialog(FlyWidget widget)
 	{return this.file_chooser.showSaveDialog(widget.Get());}
 	public int ShowSaveDialog(组件 widget)
 	{return this.file_chooser.showSaveDialog(widget.获取());}
