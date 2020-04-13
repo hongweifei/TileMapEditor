@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 
+import fly.graphics.FlyCamera;
 import fly.graphics.FlyTileMap;
 import fly.graphics.事件;
 import fly.graphics.场景;
@@ -31,7 +31,7 @@ import fly.window.listener.FlyActionAndChangeListener;
 import fly.window.listener.FlyMouseListener;
 import fly.window.widget.FlyList;
 
-/*Java无宏定义，不可全中文*/
+
 
 public class Main
 {
@@ -45,6 +45,8 @@ public class Main
 	static FlyTileMap map = null;
 	static Image[] img = null;
 	static String tile_map_path = null;
+	
+	static FlyCamera map_camera = new FlyCamera();
 	static int map_render_width = 16;
 	static int map_render_height = 16;
 	
@@ -309,10 +311,14 @@ public class Main
 		场景 场景1 = new 场景(主窗口);
 		场景1.设置鼠标监听器(new FlyMouseListener(){
 
-			@Override public void mouseClicked(MouseEvent e){}
-
-			@Override public void mousePressed(MouseEvent e)
+			int mouse_last_x = 0;
+			int mouse_last_y = 0;
+			
+			@Override public void mouseClicked(MouseEvent e)
 			{
+				mouse_last_x = e.getX();
+				mouse_last_y = e.getY();
+				
 				if(map != null && e.getButton() == MouseEvent.BUTTON1)
 				{
 					for(int i = 0;i < map.height;i++)
@@ -323,7 +329,8 @@ public class Main
 							
 							if(Main.Collision(e.getX(), e.getY(), 
 									1, 1, 
-									j * map_render_width, i * map_render_height, 
+									map_camera.look_at_x + j * map_render_width,
+									map_camera.look_at_y + i * map_render_height, 
 									map_render_width, map_render_height))
 							{
 								if(map.data[n] < map.tile_count)
@@ -342,7 +349,8 @@ public class Main
 							
 							if(Main.Collision(e.getX(), e.getY(), 
 									1, 1, 
-									j * map_render_width, i * map_render_height, 
+									map_camera.look_at_x + j * map_render_width,
+									map_camera.look_at_y + i * map_render_height, 
 									map_render_width, map_render_height))
 							{
 								if(map.data[n] > 0)
@@ -352,12 +360,36 @@ public class Main
 					}
 				}
 			}
-			@Override public void mouseReleased(MouseEvent e) {}
+
+			@Override public void mousePressed(MouseEvent e)
+			{
+				mouse_last_x = e.getX();
+				mouse_last_y = e.getY();
+			}
+			
+			@Override public void mouseReleased(MouseEvent e){}
+			
 			@Override public void mouseEntered(MouseEvent e) {}
 			@Override public void mouseExited(MouseEvent e) {}
-			@Override public void mouseDragged(MouseEvent e) {}
-			@Override public void mouseMoved(MouseEvent e) {}
-			@Override public void mouseWheelMoved(MouseWheelEvent e) {}
+			
+			/*鼠标拖动*/
+			@Override public void mouseDragged(MouseEvent e)
+			{
+				if(map != null)
+				{
+					int dx = (e.getX() - mouse_last_x);
+					int dy = (e.getY() - mouse_last_y);
+					
+					map_camera.look_at_x += dx;
+					map_camera.look_at_y += dy;
+					
+					mouse_last_x = e.getX();
+					mouse_last_y = e.getY();
+				}
+			}
+			
+			@Override public void mouseMoved(MouseEvent e){}
+			@Override public void mouseWheelMoved(MouseWheelEvent e){}
 		});
 		
 		//主窗口.添加(列表框1);
@@ -431,7 +463,8 @@ public class Main
 				Graphics g = (Graphics)物体;
 				
 				if(map != null)
-					map.渲染(渲染器1, g,map_render_width,map_render_height);
+					map.Render(渲染器1, g,map_camera.look_at_x,map_camera.look_at_y,
+					map_render_width,map_render_height);
 			}
 			
 		});

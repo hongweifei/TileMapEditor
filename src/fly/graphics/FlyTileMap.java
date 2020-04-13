@@ -45,6 +45,23 @@ public class FlyTileMap
 	 * height 渲染高度
 	 * */
 	public void Render(FlyRenderer renderer,Graphics g,int width,int height)
+	{this.Render(renderer, g, 0, 0, width, height);}
+	
+	
+	/*渲染地图
+	 * width 渲染宽度
+	 * height 渲染高度
+	 * */
+	public void Render(渲染器 renderer,Graphics g,int width,int height)
+	{this.Render(renderer, g,0,0, width, height);}
+	
+	/*渲染地图
+	 * x 地图左上角横坐标
+	 * y 地图左上角纵坐标
+	 * width 渲染宽度
+	 * height 渲染高度
+	 * */
+	public void Render(FlyRenderer renderer,Graphics g,int x,int y,int width,int height)
 	{
 		final Image[] img = new Image[this.tile_count];
 		for(int i = 0;i < this.tile_count;i++)
@@ -60,11 +77,11 @@ public class FlyTileMap
 				int n = j + i * this.width;
 				if(this.data[n] > 0)
 				{
-					renderer.DrawImage(g, img[this.data[n] - 1], j * width, 
-								i * height, width, height,null);
+					renderer.DrawImage(g, img[this.data[n] - 1], x + j * width, 
+								y + i * height, width, height,null);
 				}
 				
-				renderer.DrawRect(g, j * width, i * height, 
+				renderer.DrawRect(g, x + j * width, y + i * height, 
 						width, height);
 			}
 		}
@@ -72,10 +89,12 @@ public class FlyTileMap
 	
 	
 	/*渲染地图
+	 * x 地图左上角横坐标
+	 * y 地图左上角纵坐标
 	 * width 渲染宽度
 	 * height 渲染高度
 	 * */
-	public void 渲染(渲染器 renderer,Graphics g,int width,int height)
+	public void Render(渲染器 renderer,Graphics g,int x,int y,int width,int height)
 	{
 		final Image[] img = new Image[this.tile_count];
 		for(int i = 0;i < this.tile_count;i++)
@@ -91,15 +110,17 @@ public class FlyTileMap
 				int n = j + i * this.width;
 				if(this.data[n] > 0)
 				{
-					renderer.绘制图像(g, img[this.data[n] - 1], j * width, 
-								i * height, width, height,null);
+					renderer.绘制图像(g, img[this.data[n] - 1], x + j * width, 
+								y + i * height, width, height,null);
 				}
 				
-				renderer.绘制矩形(g, j * width, i * height, 
+				renderer.绘制矩形(g, x + j * width, y + i * height, 
 						width, height);
 			}
 		}
 	}
+	
+	
 	
 	
 	
