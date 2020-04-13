@@ -62,15 +62,15 @@ public class Main
 		{
 			for(int j = 0;j < map.width;j++)
 			{
-				System.out.print(map.data[j + i * map.width]);
+				//System.out.print(map.data[j + i * map.width]);
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		
 		img = new Image[map.tile_count];
 		for(int i = 0;i < map.tile_count;i++)
 		{
-			System.out.println(map.tile_image_path[i]);
+			//System.out.println(map.tile_image_path[i]);
 			try {img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
 			catch (IOException e) {e.printStackTrace();}
 		}
@@ -114,8 +114,9 @@ public class Main
 						Integer.parseInt(text_field.GetText(1)),
 						Integer.parseInt(text_field.GetText(2)),
 						Integer.parseInt(text_field.GetText(3)),0,null,null);
-				
+
 				tile_map_path += ".map";
+				
 				
 				try {FlyTileMap.WriteMap(tile_map_path, new_map);} 
 				catch (IOException e1){e1.printStackTrace();}
@@ -328,13 +329,7 @@ public class Main
 			{
 				mouse_last_x = e.getX();
 				mouse_last_y = e.getY();
-			}
-
-			@Override public void mousePressed(MouseEvent e)
-			{
-				mouse_last_x = e.getX();
-				mouse_last_y = e.getY();
-
+				
 				if(map != null && e.getButton() == MouseEvent.BUTTON1)
 				{
 					for(int i = 0;i < map.height;i++)
@@ -376,8 +371,17 @@ public class Main
 					}
 				}
 			}
+
+			@Override public void mousePressed(MouseEvent e)
+			{
+				mouse_last_x = e.getX();
+				mouse_last_y = e.getY();
+			}
 			
-			@Override public void mouseReleased(MouseEvent e){}
+			@Override public void mouseReleased(MouseEvent e)
+			{
+				
+			}
 			
 			@Override public void mouseEntered(MouseEvent e) {}
 			@Override public void mouseExited(MouseEvent e) {}
@@ -410,8 +414,8 @@ public class Main
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
-				文件选择器1.设置文件过滤器("地图文件", "map","MAP");
-				if(文件选择器1.弹出对话框("创建") == 文件选择器.确定选项)
+				文件选择器1.设置文件过滤器("地图文件", "map");
+				if(文件选择器1.弹出保存文件对话框() == 文件选择器.确定选项)
 				{
 					地图属性设置窗口.SetVisible(true);
 					tile_map_path = 文件选择器1.获取选中文件的路径();
@@ -427,7 +431,7 @@ public class Main
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
-				文件选择器1.设置文件过滤器("地图文件", "map","MAP");
+				文件选择器1.设置文件过滤器("地图文件", "map");
 				if(文件选择器1.弹出打开文件对话框() == 文件选择器.确定选项)
 				{
 					System.out.println("打开文件");
