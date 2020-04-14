@@ -30,7 +30,7 @@ public class FlyMenuBar
 		menu_item = new ArrayList<JMenuItem>();
 	}
 
-	/*添加一个菜单*/
+	/**添加一个菜单*/
 	public int AddMenu(){return AddMenu("");}
 	public int AddMenu(String menu_text)
 	{
@@ -41,7 +41,7 @@ public class FlyMenuBar
 		return menu.size() - 1;//返回菜单索引
 	}
 
-	/*添加多个菜单*/
+	/**添加多个菜单*/
 	public int[] AddMenus(int n)//返回菜单索引
 	{String[] title = new String[n];return this.AddMenus(title);}
 	public int[] AddMenus(String... menu_text)//返回菜单索引
@@ -54,7 +54,7 @@ public class FlyMenuBar
 		return menu_index;//返回各个菜单索引
 	}
 
-	/*添加一个菜单项*/
+	/**添加一个菜单项*/
 	public int AddMenuItem(int menu_index){return this.AddMenuItem(menu_index, "");}
 	public int AddMenuItem(int menu_index,String menu_item_text)
 	{
@@ -63,7 +63,7 @@ public class FlyMenuBar
 		return menu_item.size() - 1;//返回菜单项索引,索引等于菜单项数量 -1
 	}
 
-	/*添加多个菜单项*/
+	/**添加多个菜单项*/
 	public int[] AddMenuItems(int menu_index,int n)// menu_index 为菜单索引   n 为菜单项数量
 	{String[] text = new String[n];return AddMenuItems(menu_index,text);}
 	public int[] AddMenuItems(int menu_index,String... menu_item_text)
@@ -76,14 +76,14 @@ public class FlyMenuBar
 		return index;//返回各个菜单项索引
 	}
 
-	/*移除菜单*/
-	public void RemoveMenu(int menu_index){menu.remove(menu_index);}
+	/**移除菜单*/
+	public void RemoveMenu(int menu_index){menu_bar.remove(menu_index);menu.remove(menu_index);}
 
-	/*菜单插入分割线*/
+	/**菜单插入分割线*/
 	public void MenuInsertSeparator(int menu_index,int index)
 	{menu.get(menu_index).insertSeparator(index);}
 
-	/*菜单项添加监听器*/
+	/**菜单项添加监听器*/
 	public void MenuItemAddListener(int menu_item_index,FlyActionAndChangeListener listener)
 	{
 		/*给菜单项添加ActionListener和ChangeListener*/

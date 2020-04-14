@@ -38,7 +38,7 @@ public class FlyFileChooser
 
 
 	/**
-	 * 弹出带有自定义批准按钮的自定义文件选择器对话框。
+	 * 弹出带有自定义确定按钮的自定义文件选择器对话框。
 	 *
 	 * 弹出时文件选择器的返回状态:
 	 * FlyFileChooser.APPROVE_OPTION
@@ -71,7 +71,7 @@ public class FlyFileChooser
 
 
 	/**
-	 * 弹出带有自定义批准按钮的自定义文件选择器对话框。
+	 * 弹出带有自定义确定按钮的自定义文件选择器对话框。
 	 *
 	 * 弹出时文件选择器的返回状态:
 	 * FlyFileChooser.APPROVE_OPTION
@@ -280,7 +280,7 @@ public class FlyFileChooser
 	}
 
 	/**
-	 * 设置过滤器
+	 * 设置过滤器,支持文件的格式 *，不用 *.*
 	 *
 	 * @param file_filter 要设置的过滤器
 	 * */
@@ -291,7 +291,7 @@ public class FlyFileChooser
 	}
 
 	/**
-	 * 设置过滤器
+	 * 设置过滤器,支持文件的格式 *，不用 *.*
 	 *
 	 * @param description textual description for the filter, may be null
 	 * @param extensions accepted file name extensions

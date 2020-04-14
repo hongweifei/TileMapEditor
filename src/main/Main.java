@@ -37,27 +37,27 @@ public class Main
 {
 	static 窗口 主窗口;
 	static 菜单栏 菜单栏1;
-	
+
 	static FlyDialog 地图属性设置窗口;
 	static FlyLabelManager label;
 	static FlyTextFieldManager text_field;
-	
+
 	static FlyTileMap map = null;
 	static Image[] img = null;
 	static String tile_map_path = null;
 
 	static boolean map_can_render = true;
-	
+
 	static FlyCamera map_camera = new FlyCamera();
 	static int map_render_width = 16;
 	static int map_render_height = 16;
-	
+
 	public static FlyTileMap OpenTileMap(String path)
 	{
 		FlyTileMap map = null;
 		try{map = FlyTileMap.ReadMap(path);}
 		catch (IOException e) {e.printStackTrace();}
-		
+
 		for(int i = 0;i < map.height;i++)
 		{
 			for(int j = 0;j < map.width;j++)
@@ -66,7 +66,7 @@ public class Main
 			}
 			//System.out.println();
 		}
-		
+
 		img = new Image[map.tile_count];
 		for(int i = 0;i < map.tile_count;i++)
 		{
@@ -74,25 +74,25 @@ public class Main
 			try {img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
 			catch (IOException e) {e.printStackTrace();}
 		}
-		
+
 		return map;
 	}
-	
-	
-	public static void main(String[] args) throws MalformedURLException, IOException 
+
+
+	public static void main(String[] args) throws MalformedURLException, IOException
 	{
 		主窗口 = new 窗口("Tile Map Editor");
 		//主窗口.设置布局();
-		
+
 		地图属性设置窗口 = new FlyDialog(主窗口,"地图属性设置",250,100);
 		地图属性设置窗口.SetLayout(new GridLayout(0,4));
-		
+
 		label = new FlyLabelManager();
 		label.AddLabels("地图宽度：","地图高度：","瓦片宽度：","瓦片高度：");
-		
+
 		text_field = new FlyTextFieldManager();
 		text_field.AddTextFields("0","0","0","0");
-		
+
 		label.AddToWindow(地图属性设置窗口,0);
 		text_field.AddToWindow(地图属性设置窗口,0);
 		label.AddToWindow(地图属性设置窗口,1);
@@ -101,10 +101,10 @@ public class Main
 		text_field.AddToWindow(地图属性设置窗口,2);
 		label.AddToWindow(地图属性设置窗口,3);
 		text_field.AddToWindow(地图属性设置窗口,3);
-		
+
 		JButton create_map_button = new JButton("确定");
 		地图属性设置窗口.Add(create_map_button);
-		
+
 		create_map_button.addActionListener(new ActionListener(){
 
 			@Override
@@ -116,28 +116,28 @@ public class Main
 						Integer.parseInt(text_field.GetText(3)),0,null,null);
 
 				tile_map_path += ".map";
-				
-				
-				try {FlyTileMap.WriteMap(tile_map_path, new_map);} 
+
+
+				try {FlyTileMap.WriteMap(tile_map_path, new_map);}
 				catch (IOException e1){e1.printStackTrace();}
-				
+
 				map = Main.OpenTileMap(tile_map_path);
-				
+
 				地图属性设置窗口.SetVisible(false);
 			}
-			
+
 		});
-		
+
 		菜单栏1 = new 菜单栏();
 		菜单栏1.添加菜单("文件","地图","地图绘制");
-		  
+
 		菜单栏1.添加菜单项(0, "新建","打开","保存","另存为","关闭");
 		菜单栏1.添加菜单项(1, "导入图片(绝对路径)","导入图片(相对路径)","移除图片");
 		菜单栏1.添加菜单项(2,"绘制宽高调整");
 		菜单栏1.插入分割线(0, 2);
 		菜单栏1.插入分割线(0, 5);
 		菜单栏1.插入分割线(1, 2);
-		 
+
 		/*导入图片(绝对路径)*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("导入图片(绝对路径)"), new FlyActionAndChangeListener(){
 
@@ -150,19 +150,19 @@ public class Main
 					if(map != null)
 					{
 						map.tile_count++;
-					
+
 						String[] image_path = map.tile_image_path;
 						map.tile_image_path = new String[map.tile_count];
-						
+
 						System.arraycopy(image_path,0,map.tile_image_path,0,image_path.length);
-						
+
 						map.tile_image_path[map.tile_count - 1] = 文件选择器1.获取选中文件的路径();
 					}
 				}
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 		/*导入图片(相对路径)*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("导入图片(相对路径)"), new FlyActionAndChangeListener(){
 
@@ -170,10 +170,10 @@ public class Main
 			{
 				FlyDialog 导入图片窗口 = new FlyDialog(主窗口,"图片路径设置",250,100);
 				导入图片窗口.SetLayout(new GridLayout(2,1));
-				
+
 				FlyTextFieldManager manager = new FlyTextFieldManager();
 				manager.AddTextField();
-				
+
 				JButton 导入按钮 = new JButton("导入");
 				导入按钮.addActionListener(new ActionListener() {
 					@Override public void actionPerformed(ActionEvent e)
@@ -181,25 +181,25 @@ public class Main
 						if(map != null && manager.GetText(0) != "")
 						{
 							map.tile_count++;
-						
+
 							String[] image_path = map.tile_image_path;
 							map.tile_image_path = new String[map.tile_count];
-							
+
 							System.arraycopy(image_path,0,map.tile_image_path,0,image_path.length);
-							
+
 							map.tile_image_path[map.tile_count - 1] = manager.GetText(0);
 						}
 						导入图片窗口.SetVisible(false);
 					}
 				});
-				
+
 				manager.AddToWindow(导入图片窗口);
 				导入图片窗口.Add(导入按钮);
 				导入图片窗口.SetVisible(true);
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 		/*移除图片*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("移除图片"), new FlyActionAndChangeListener(){
 
@@ -208,15 +208,15 @@ public class Main
 				if(map != null)
 				{
 					FlyTileMap now_map = map;
-					
+
 					FlyDialog 移除图片窗口 = new FlyDialog(主窗口,"移除图片",250,100);
 					移除图片窗口.SetLayout(new GridLayout());
-					
+
 					FlyList<String> list = new FlyList<String>();
-					
+
 					for(int i = 0;i < map.tile_count;i++)
 						list.AddItem(map.tile_image_path[i]);
-					
+
 					JButton 移除按钮 = new JButton("移除");
 					移除按钮.addActionListener(new ActionListener() {
 						@Override public void actionPerformed(ActionEvent e)
@@ -230,7 +230,7 @@ public class Main
 									for(int j = 0;j < map.width;j++)
 									{
 										int n = j + i * map.width;
-										
+
 										if(map.data[n] == list.Get().getSelectedIndex() + 1)
 											map.data[n] = 0;
 										else if(map.data[n] > list.Get().getSelectedIndex() + 1)
@@ -239,34 +239,34 @@ public class Main
 								}
 
 								map.tile_count--;
-								
+
 								String[] image_path = map.tile_image_path;
 								map.tile_image_path = new String[map.tile_count];
-								
+
 								int j = 0;
 								for(int i = 0;i < map.tile_count;i++)
 								{
 									if(i == list.Get().getSelectedIndex())
 										j++;
-									
+
 									map.tile_image_path[i] = image_path[j];
-									
+
 									j++;
 								}
 
 								map_can_render = true;
 							}
 							else if(now_map != map)
-								JOptionPane.showOptionDialog(null, 
-								"该地图以关闭", "提示", JOptionPane.DEFAULT_OPTION, 
+								JOptionPane.showOptionDialog(null,
+								"该地图以关闭", "提示", JOptionPane.DEFAULT_OPTION,
 								JOptionPane.ERROR_MESSAGE, null, null, null);
-							
+
 							移除图片窗口.SetVisible(false);
 
 
 						}
 					});
-					
+
 					移除图片窗口.Add(list);
 					移除图片窗口.Add(移除按钮);
 					移除图片窗口.SetVisible(true);
@@ -274,25 +274,25 @@ public class Main
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("绘制宽高调整"), new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e)
 			{
 				FlyDialog 绘制宽高调整窗口 = new FlyDialog(主窗口,"地图绘制宽高调整",250,100);
 				绘制宽高调整窗口.SetLayout(new GridLayout(0,4));
-				
+
 				FlyLabelManager label_manager = new FlyLabelManager();
 				label_manager.AddLabels("绘制宽度：","绘制高度：");
-				
+
 				FlyTextFieldManager field_manager = new FlyTextFieldManager();
 				field_manager.AddTextFields(Integer.toString(map_render_width),
 				Integer.toString(map_render_height));
-				
+
 				label_manager.AddToWindow(绘制宽高调整窗口,0);
 				field_manager.AddToWindow(绘制宽高调整窗口,0);
 				label_manager.AddToWindow(绘制宽高调整窗口,1);
 				field_manager.AddToWindow(绘制宽高调整窗口,1);
-				
+
 				JButton 调整按钮 = new JButton("确定");
 				调整按钮.addActionListener(new ActionListener() {
 					@Override public void actionPerformed(ActionEvent e)
@@ -304,32 +304,32 @@ public class Main
 							map_render_height = Integer.parseInt(field_manager.GetText(1));
 						}
 						else
-							JOptionPane.showOptionDialog(null, "绘制宽度或高度编辑框为空", "提示", 
+							JOptionPane.showOptionDialog(null, "绘制宽度或高度编辑框为空", "提示",
 							JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
-						
+
 						绘制宽高调整窗口.SetVisible(false);
 					}
 				});
-				
+
 				绘制宽高调整窗口.Add(调整按钮);
 				绘制宽高调整窗口.SetVisible(true);
-				
+
 			}
 		});
-		
+
 		主窗口.设置菜单栏(菜单栏1);
-		
+
 		场景 场景1 = new 场景(主窗口);
 		场景1.设置鼠标监听器(new FlyMouseListener(){
 
 			int mouse_last_x = 0;
 			int mouse_last_y = 0;
-			
+
 			@Override public void mouseClicked(MouseEvent e)
 			{
 				mouse_last_x = e.getX();
 				mouse_last_y = e.getY();
-				
+
 				if(map != null && e.getButton() == MouseEvent.BUTTON1)
 				{
 					for(int i = 0;i < map.height;i++)
@@ -377,15 +377,15 @@ public class Main
 				mouse_last_x = e.getX();
 				mouse_last_y = e.getY();
 			}
-			
+
 			@Override public void mouseReleased(MouseEvent e)
 			{
-				
+
 			}
-			
+
 			@Override public void mouseEntered(MouseEvent e) {}
 			@Override public void mouseExited(MouseEvent e) {}
-			
+
 			/*鼠标拖动*/
 			@Override public void mouseDragged(MouseEvent e)
 			{
@@ -393,24 +393,24 @@ public class Main
 				{
 					int dx = (e.getX() - mouse_last_x);
 					int dy = (e.getY() - mouse_last_y);
-					
+
 					map_camera.look_at_x += dx;
 					map_camera.look_at_y += dy;
-					
+
 					mouse_last_x = e.getX();
 					mouse_last_y = e.getY();
 				}
 			}
-			
+
 			@Override public void mouseMoved(MouseEvent e){}
 			@Override public void mouseWheelMoved(MouseWheelEvent e){}
 		});
-		
+
 		//主窗口.添加(列表框1);
-		
+
 		/*新建地图*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("新建"), new FlyActionAndChangeListener() {
-			
+
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
@@ -421,13 +421,13 @@ public class Main
 					tile_map_path = 文件选择器1.获取选中文件的路径();
 				}
 			}
-			
+
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 		/*打开地图*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("打开"), new FlyActionAndChangeListener() {
-			
+
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				文件选择器 文件选择器1 = new 文件选择器();
@@ -435,38 +435,38 @@ public class Main
 				if(文件选择器1.弹出打开文件对话框() == 文件选择器.确定选项)
 				{
 					System.out.println("打开文件");
-					
+
 					tile_map_path = 文件选择器1.获取选中文件的路径();
-					
+
 					map = Main.OpenTileMap(tile_map_path);
 				}
 			}
-			
+
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 		/*保存地图*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("保存"), new FlyActionAndChangeListener() {
-			
+
 			@Override public void actionPerformed(ActionEvent event)
 			{
 				if(map != null && tile_map_path != null)
 				{
-					try {FlyTileMap.WriteMap(tile_map_path, map);} 
+					try {FlyTileMap.WriteMap(tile_map_path, map);}
 					catch (IOException e1){e1.printStackTrace();}
 				}
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 		/*关闭程序*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("关闭"), new FlyActionAndChangeListener() {
-			
+
 			@Override public void actionPerformed(ActionEvent event)
 			{System.out.println("Window close");System.exit(0);}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
-		
+
 
 		场景1.获取渲染器().设置渲染事件(new 事件(){
 
@@ -475,16 +475,16 @@ public class Main
 			{
 				渲染器 渲染器1 = 场景1.获取渲染器();
 				Graphics g = (Graphics)物体;
-				
+
 				if(map != null && map_can_render)
 					map.Render(渲染器1, g,map_camera.look_at_x,map_camera.look_at_y,
 					map_render_width,map_render_height);
 			}
-			
+
 		});
 	}
-	
-	
+
+
 	public static boolean Collision(int x1,int y1,int width1,int height1,
 			int x2,int y2,int width2,int height2)
 	{
@@ -493,10 +493,10 @@ public class Main
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 }
 
 
