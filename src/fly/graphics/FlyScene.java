@@ -48,7 +48,12 @@ public class FlyScene extends JPanel
 	 *
 	 * @param g
 	 * */
-	@Override public void paint(Graphics g){super.paint(g);renderer.Render(g);super.repaint();}
+	@Override public void paint(Graphics g)
+	{
+		super.paint(g);
+		if(renderer.Render(g))
+			super.repaint();
+	}
 
 	/**
 	 * 设置场景使用的渲染器
@@ -95,12 +100,14 @@ public class FlyScene extends JPanel
 		this.addKeyListener(listener);
 	}
 
+
 	/**
 	 * 将场景添加至窗口
 	 *
 	 * @param w 场景要添加到的窗口
 	 * */
 	public void AddToWindow(Window w){w.GetFrame().add(this);w.SetVisible(true);}
+
 
 	/**
 	 * 将场景添加至窗口

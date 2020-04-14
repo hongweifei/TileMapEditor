@@ -113,7 +113,7 @@ public class Main
 				FlyTileMap new_map = new FlyTileMap(Integer.parseInt(text_field.GetText(0)),
 						Integer.parseInt(text_field.GetText(1)),
 						Integer.parseInt(text_field.GetText(2)),
-						Integer.parseInt(text_field.GetText(3)),0,null,null);
+						Integer.parseInt(text_field.GetText(3)),null,null);
 
 				tile_map_path += ".map";
 
@@ -148,16 +148,7 @@ public class Main
 				if(文件选择器1.弹出对话框("确定") == 文件选择器.确定选项)
 				{
 					if(map != null)
-					{
-						map.tile_count++;
-
-						String[] image_path = map.tile_image_path;
-						map.tile_image_path = new String[map.tile_count];
-
-						System.arraycopy(image_path,0,map.tile_image_path,0,image_path.length);
-
-						map.tile_image_path[map.tile_count - 1] = 文件选择器1.获取选中文件的路径();
-					}
+						map.AddImage(文件选择器1.获取选中文件的路径());
 				}
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
@@ -178,17 +169,8 @@ public class Main
 				导入按钮.addActionListener(new ActionListener() {
 					@Override public void actionPerformed(ActionEvent e)
 					{
-						if(map != null && manager.GetText(0) != "")
-						{
-							map.tile_count++;
-
-							String[] image_path = map.tile_image_path;
-							map.tile_image_path = new String[map.tile_count];
-
-							System.arraycopy(image_path,0,map.tile_image_path,0,image_path.length);
-
-							map.tile_image_path[map.tile_count - 1] = manager.GetText(0);
-						}
+						if(map != null && !manager.GetText(0).isEmpty())
+							map.AddImage(manager.GetText(0));
 						导入图片窗口.SetVisible(false);
 					}
 				});
@@ -225,34 +207,7 @@ public class Main
 							{
 								map_can_render = false;
 
-								for(int i = 0;i < map.height;i++)
-								{
-									for(int j = 0;j < map.width;j++)
-									{
-										int n = j + i * map.width;
-
-										if(map.data[n] == list.Get().getSelectedIndex() + 1)
-											map.data[n] = 0;
-										else if(map.data[n] > list.Get().getSelectedIndex() + 1)
-											map.data[n]--;
-									}
-								}
-
-								map.tile_count--;
-
-								String[] image_path = map.tile_image_path;
-								map.tile_image_path = new String[map.tile_count];
-
-								int j = 0;
-								for(int i = 0;i < map.tile_count;i++)
-								{
-									if(i == list.Get().getSelectedIndex())
-										j++;
-
-									map.tile_image_path[i] = image_path[j];
-
-									j++;
-								}
+								map.RemoveImage(list.Get().getSelectedIndex());
 
 								map_can_render = true;
 							}
@@ -275,6 +230,8 @@ public class Main
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 
+
+		/*绘制宽高调整*/
 		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("绘制宽高调整"), new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e)
 			{
@@ -391,8 +348,8 @@ public class Main
 			{
 				if(map != null)
 				{
-					int dx = (e.getX() - mouse_last_x);
-					int dy = (e.getY() - mouse_last_y);
+					int dx = e.getX() - mouse_last_x;
+					int dy = e.getY() - mouse_last_y;
 
 					map_camera.look_at_x += dx;
 					map_camera.look_at_y += dy;
@@ -468,20 +425,19 @@ public class Main
 		});
 
 
-		场景1.获取渲染器().设置渲染事件(new 事件(){
+		场景1.获取渲染器().设置渲染事件(new 事件<Graphics>(){
 
 			@Override
-			public void 执行(Object 物体)
+			public void 执行(Graphics g)
 			{
 				渲染器 渲染器1 = 场景1.获取渲染器();
-				Graphics g = (Graphics)物体;
 
 				if(map != null && map_can_render)
 					map.Render(渲染器1, g,map_camera.look_at_x,map_camera.look_at_y,
 					map_render_width,map_render_height);
 			}
 
-		});
+		},true);
 	}
 
 

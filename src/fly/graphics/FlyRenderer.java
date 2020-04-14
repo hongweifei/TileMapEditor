@@ -32,24 +32,44 @@ import java.awt.image.ImageObserver;
  * */
 public class FlyRenderer
 {
-	private Event render_event;
+	private Event<Graphics> render_event;
+	private boolean auto_repaint = false;
 
 	public FlyRenderer()
-	{render_event = new Event() {@Override public void invoke(Object object) {}};}
+	{render_event = new Event<Graphics>() {@Override public void invoke(Graphics g) {}};}
+
 
 	/**
 	 * 设置渲染事件
 	 *
 	 * @param render_event 要设置的渲染事件
 	 * */
-	public void SetRenderEvent(Event render_event){this.render_event = render_event;}
+	public void SetRenderEvent(Event<Graphics> render_event)
+	{
+		this.render_event = render_event;
+	}
+
+
+	/**
+	 * 设置渲染事件
+	 *
+	 * @param render_event 要设置的渲染事件
+	 * @param auto_repaint 自动重绘
+	 * */
+	public void SetRenderEvent(Event<Graphics> render_event,boolean auto_repaint)
+	{
+		this.render_event = render_event;
+		this.auto_repaint = auto_repaint;
+	}
+
 
 	/**
 	 * 执行渲染事件，Event.invoke的object是graphics类型
 	 *
 	 * @param g
 	 * */
-	public void Render(Graphics g) {render_event.invoke(g);}
+	public boolean Render(Graphics g) {render_event.invoke(g);return this.auto_repaint;}
+
 
 	/**
 	 * 画线

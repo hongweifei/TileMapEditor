@@ -35,27 +35,41 @@ public class FlyTileMap
 
     public short[] data;///< 瓦片地图数据
 
-	public FlyTileMap(){this(0,0,0,0,0,null,null);}
+    private Image[] img = null;
+
+	public FlyTileMap(){this(0,0,0,0,null,null);}
 
 	/**
 	 * @param width 地图宽度
 	 * @param height 地图高度
 	 * @param tile_width 瓦片宽度
 	 * @param tile_height 瓦片高度
-	 * @param tile_count 瓦片地图的图像数量
-	 * @param tile_image_path 瓦片地图内的图片路径
 	 * @param data 瓦片地图数据
+	 * @param tile_image_path 瓦片地图内的图片路径
 	 * */
 	public FlyTileMap(int width,int height,
 			int tile_width,int tile_height,
-			int tile_count,String[] tile_image_path,
-			short[] data)
+			short[] data,
+			String... tile_image_path)
 	{
 		this.width = (short) width;
 		this.height = (short) height;
 		this.tile_width = (short) tile_width;
 		this.tile_height = (short) tile_height;
-		this.tile_count = (short) tile_count;
+
+		if(tile_image_path != null)
+		{
+			this.tile_count = (short) tile_image_path.length;
+			this.img = new Image[this.tile_count];
+			for(int i = 0;i < this.tile_count;i++)
+			{
+				try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
+				catch (IOException e) {e.printStackTrace();}
+			}
+		}
+		else
+			this.tile_count = 0;
+
 		this.tile_image_path = tile_image_path;
 		this.data = data;
 	}
@@ -86,13 +100,6 @@ public class FlyTileMap
 	 * */
 	public void Render(FlyRenderer renderer,Graphics g,int x,int y,int width,int height)
 	{
-		final Image[] img = new Image[this.tile_count];
-		for(int i = 0;i < this.tile_count;i++)
-		{
-			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
-			catch (IOException e) {e.printStackTrace();}
-		}
-
 		for(int i = 0;i < this.height;i++)
 		{
 			for(int j = 0;j < this.width;j++)
@@ -143,6 +150,83 @@ public class FlyTileMap
 			}
 		}
 	}
+
+
+
+	/**
+	 * 添加图片
+	 *
+	 * @param path 图片路径
+	 * */
+	public void AddImage(String path)
+	{
+		tile_count++;
+
+		String[] image_path = tile_image_path;
+		tile_image_path = new String[tile_count];
+
+		System.arraycopy(image_path,0,tile_image_path,0,image_path.length);
+
+		tile_image_path[tile_count - 1] = path;
+
+
+		this.img = new Image[this.tile_count];
+
+		for(int i = 0;i < this.tile_count;i++)
+		{
+			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
+			catch (IOException e) {e.printStackTrace();}
+		}
+
+	}
+
+
+
+
+	/**
+	 * 移除图片
+	 *
+	 * @index 图片索引
+	 * */
+	public void RemoveImage(int index)
+	{
+		for(int i = 0;i < height;i++)
+		{
+			for(int j = 0;j < width;j++)
+			{
+				int n = j + i * width;
+
+				if(data[n] == index + 1)
+					data[n] = 0;
+				else if(data[n] > index + 1)
+					data[n]--;
+			}
+		}
+
+		tile_count--;
+
+		String[] image_path = tile_image_path;
+		tile_image_path = new String[tile_count];
+
+		int j = 0;
+		for(int i = 0;i < tile_count;i++)
+		{
+			if(i == index)
+				j++;
+
+			tile_image_path[i] = image_path[j];
+
+			j++;
+		}
+
+		this.img = new Image[this.tile_count];
+		for(int i = 0;i < this.tile_count;i++)
+		{
+			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
+			catch (IOException e) {e.printStackTrace();}
+		}
+	}
+
 
 
 
@@ -213,6 +297,9 @@ public class FlyTileMap
 		map.tile_count = reader.readShort();
 		map.tile_image_path = new String[map.tile_count];
 
+
+		map.img = new Image[map.tile_count];
+
 		for(int i = 0;i < map.tile_count;i++)
 		{
 			/*读取图片路径字节数*/
@@ -226,6 +313,9 @@ public class FlyTileMap
 			}
 
 			map.tile_image_path[i] = new String(image_path);
+
+			try {map.img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
+			catch (IOException e) {e.printStackTrace();}
 		}
 
 		map.data = new short[map.width * map.height];

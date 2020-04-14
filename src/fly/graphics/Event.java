@@ -1,6 +1,6 @@
 package fly.graphics;
 
-public interface Event
+public interface Event<T>
 {
-	public void invoke(Object object);
+	public void invoke(T t);
 }
