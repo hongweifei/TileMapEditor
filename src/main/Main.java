@@ -276,6 +276,7 @@ public class Main
 
 		主窗口.设置菜单栏(菜单栏1);
 
+		/*地图编辑*/
 		场景 场景1 = new 场景(主窗口);
 		场景1.设置鼠标监听器(new FlyMouseListener(){
 

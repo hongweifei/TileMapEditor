@@ -112,12 +112,12 @@ public class FlyRenderer
 	 * 画文本
 	 *
 	 * @param g
-	 * @param str 要绘制的文本
+	 * @param text 要绘制的文本
 	 * @param x 绘制横坐标
 	 * @param y 绘制纵坐标
 	 * */
-	public void DrawText(Graphics g,String str,int x,int y)
-	{g.drawString(str,x,y);}
+	public void DrawText(Graphics g,String text,int x,int y)
+	{g.drawString(text,x,y);}
 
 	/**
 	 * 绘制图片，不可设置绘制宽高
