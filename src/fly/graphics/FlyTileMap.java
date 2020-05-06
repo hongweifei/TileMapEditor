@@ -74,6 +74,8 @@ public class FlyTileMap
 		this.data = data;
 	}
 
+
+
 	/**
 	 * 渲染地图
 	 * @param width 渲染宽度

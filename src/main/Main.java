@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 
@@ -43,6 +45,7 @@ public class Main
 	static FlyTextFieldManager text_field;
 
 	static FlyTileMap map = null;
+	static int map_pic_index = 0;
 	static Image[] img = null;
 	static String tile_map_path = null;
 
@@ -133,7 +136,7 @@ public class Main
 
 		菜单栏1.添加菜单项(0, "新建","打开","保存","另存为","关闭");
 		菜单栏1.添加菜单项(1, "导入图片(绝对路径)","导入图片(相对路径)","移除图片");
-		菜单栏1.添加菜单项(2,"绘制宽高调整");
+		菜单栏1.添加菜单项(2,"绘制宽高调整","绘制图片选择");
 		菜单栏1.插入分割线(0, 2);
 		菜单栏1.插入分割线(0, 5);
 		菜单栏1.插入分割线(1, 2);
@@ -274,6 +277,52 @@ public class Main
 			}
 		});
 
+		/*绘制图片选择*/
+		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("绘制图片选择"), new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				FlyDialog win = new FlyDialog();
+				win.GetDialog().setSize(300, 150);
+				win.SetLayout(new GridLayout(2,1));
+
+				JButton yes_button = new JButton("确认");
+
+				JList list = new JList();
+				DefaultListModel defaultListModel = new DefaultListModel();
+
+				defaultListModel.add(0, "null");
+
+				if(map != null)
+				{
+					for(int i = 0;i < map.tile_count;i++)
+					{
+						defaultListModel.add(i + 1, map.tile_image_path[i]);
+					}
+				}
+
+				list.setModel(defaultListModel);
+				list.setSelectedIndex(map_pic_index);
+
+				yes_button.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent arg0)
+					{
+						map_pic_index = list.getSelectedIndex();
+						win.SetVisible(false);
+					}
+
+				});
+
+				win.Add(list);
+				win.Add(yes_button);
+				win.SetVisible(true);
+			}
+
+		});
+
 		主窗口.设置菜单栏(菜单栏1);
 
 		/*地图编辑*/
@@ -302,8 +351,11 @@ public class Main
 									map_camera.look_at_y + i * map_render_height,
 									map_render_width, map_render_height))
 							{
+								/*
 								if(map.data[n] < map.tile_count)
 									map.data[n] += 1;
+								*/
+								map.data[n] = (short) map_pic_index;
 							}
 						}
 					}
@@ -322,8 +374,11 @@ public class Main
 									map_camera.look_at_y + i * map_render_height,
 									map_render_width, map_render_height))
 							{
+								/*
 								if(map.data[n] > 0)
 									map.data[n] -= 1;
+								*/
+								map.data[n] = (short) map_pic_index;
 							}
 						}
 					}
