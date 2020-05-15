@@ -1,6 +1,7 @@
 package fly.graphics;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
@@ -22,15 +23,20 @@ import fly.window.listener.FlyWindowListener;
  * */
 public class FlyScene extends JPanel
 {
-	private FlyRenderer renderer;///< 渲染器
+	private FlyRenderer2D renderer;///< 渲染器
+	private boolean renderer_init = false;
 
 	/**场景渲染事件*/
-	private Event<Graphics> render_event =
-			new Event<Graphics>(){@Override public void invoke(Graphics t) {}};
+	private Event<FlyRenderer2D> render_event =
+			new Event<FlyRenderer2D>(){@Override public void invoke(FlyRenderer2D renderer) {}};
 
 	private boolean auto_repaint = false;
 
-	public FlyScene(){renderer = new FlyRenderer();}
+	public FlyScene()
+	{
+		//renderer = new FlyRenderer2D();
+	}
+
 	public FlyScene(Window w) {this();this.AddToWindow(w);}
 	public FlyScene(窗口 w) {this();this.AddToWindow(w);}
 
@@ -58,7 +64,10 @@ public class FlyScene extends JPanel
 	{
 		super.paint(g);
 
-		render_event.invoke(g);
+		if(!renderer_init)
+			renderer = new FlyRenderer2D((Graphics2D)g);
+
+		render_event.invoke(renderer);
 
 		if(auto_repaint
 			//|| renderer.Render(g)
@@ -70,7 +79,7 @@ public class FlyScene extends JPanel
 	/**
 	 * 设置渲染事件
 	 * */
-	public void SetRenderEvent(Event<Graphics> event)
+	public void SetRenderEvent(Event<FlyRenderer2D> event)
 	{
 		this.render_event = event;
 	}
@@ -78,7 +87,7 @@ public class FlyScene extends JPanel
 	/**
 	 * 设置渲染事件
 	 * */
-	public void SetRenderEvent(Event<Graphics> event,boolean repaint)
+	public void SetRenderEvent(Event<FlyRenderer2D> event,boolean repaint)
 	{
 		this.render_event = event;
 		this.auto_repaint = repaint;
@@ -90,12 +99,12 @@ public class FlyScene extends JPanel
 	 *
 	 * @param renderer 给场景的渲染器
 	 * */
-	public void SetRenderer(FlyRenderer renderer) {this.renderer = renderer;}
+	public void SetRenderer(FlyRenderer2D renderer) {this.renderer = renderer;}
 
 	/**
 	 * 获取场景使用的渲染器
 	 * */
-	public FlyRenderer GetRenderer() {return this.renderer;}
+	public FlyRenderer2D GetRenderer() {return this.renderer;}
 
 	/**
 	 * 设置鼠标监听器

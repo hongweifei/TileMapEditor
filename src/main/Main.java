@@ -1,6 +1,6 @@
 package main;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -18,11 +18,11 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 
+import fly.graphics.Event;
 import fly.graphics.FlyCamera;
+import fly.graphics.FlyRenderer2D;
+import fly.graphics.FlyScene;
 import fly.graphics.FlyTileMap;
-import fly.graphics.事件;
-import fly.graphics.场景;
-import fly.graphics.渲染器;
 import fly.window.FlyDialog;
 import fly.window.FlyLabelManager;
 import fly.window.FlyTextFieldManager;
@@ -326,8 +326,8 @@ public class Main
 		主窗口.设置菜单栏(菜单栏1);
 
 		/*地图编辑*/
-		场景 场景1 = new 场景(主窗口);
-		场景1.设置鼠标监听器(new FlyMouseListener(){
+		FlyScene 场景1 = new FlyScene(主窗口);
+		场景1.SetMouseListener(new FlyMouseListener(){
 
 			int mouse_last_x = 0;
 			int mouse_last_y = 0;
@@ -481,18 +481,19 @@ public class Main
 		});
 
 
-		场景1.设置渲染事件(new 事件<Graphics>(){
+		场景1.SetRenderEvent(new Event<FlyRenderer2D>(){
 
 			final long ms = 1000/30;
 
 			@Override
-			public void 执行(Graphics g)
+			public void invoke(FlyRenderer2D renderer)
 			{
-				渲染器 渲染器1 = 场景1.获取渲染器();
-
 				if(map != null && map_can_render)
-					map.Render(渲染器1, g,map_camera.look_at_x,map_camera.look_at_y,
+					map.Render(renderer, renderer.GetGraphics2D(),
+					map_camera.look_at_x,map_camera.look_at_y,
 					map_render_width,map_render_height);
+
+
 
 				try{Thread.sleep(ms);}
 				catch (InterruptedException e){e.printStackTrace();}
