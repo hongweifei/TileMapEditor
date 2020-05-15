@@ -483,6 +483,8 @@ public class Main
 
 		场景1.获取渲染器().设置渲染事件(new 事件<Graphics>(){
 
+			long ms = 1000/30;
+
 			@Override
 			public void 执行(Graphics g)
 			{
@@ -491,6 +493,9 @@ public class Main
 				if(map != null && map_can_render)
 					map.Render(渲染器1, g,map_camera.look_at_x,map_camera.look_at_y,
 					map_render_width,map_render_height);
+
+				try{Thread.sleep(ms);}
+				catch (InterruptedException e){e.printStackTrace();}
 			}
 
 		},true);
