@@ -32,11 +32,13 @@ import java.awt.image.ImageObserver;
  * */
 public class FlyRenderer
 {
-	private Event<Graphics> render_event;
-	private boolean auto_repaint = false;
+	//private Event<Graphics> render_event;
+	//private boolean auto_repaint = false;
 
 	public FlyRenderer()
-	{render_event = new Event<Graphics>() {@Override public void invoke(Graphics g) {}};}
+	{
+		//render_event = new Event<Graphics>() {@Override public void invoke(Graphics g) {}};
+	}
 
 
 	/**
@@ -44,10 +46,10 @@ public class FlyRenderer
 	 *
 	 * @param render_event 要设置的渲染事件
 	 * */
-	public void SetRenderEvent(Event<Graphics> render_event)
-	{
-		this.render_event = render_event;
-	}
+	//public void SetRenderEvent(Event<Graphics> render_event)
+	//{
+	//	this.render_event = render_event;
+	//}
 
 
 	/**
@@ -56,11 +58,11 @@ public class FlyRenderer
 	 * @param render_event 要设置的渲染事件
 	 * @param auto_repaint 自动重绘
 	 * */
-	public void SetRenderEvent(Event<Graphics> render_event,boolean auto_repaint)
-	{
-		this.render_event = render_event;
-		this.auto_repaint = auto_repaint;
-	}
+	//public void SetRenderEvent(Event<Graphics> render_event,boolean auto_repaint)
+	//{
+	//	this.render_event = render_event;
+	//	this.auto_repaint = auto_repaint;
+	//}
 
 
 	/**
@@ -68,7 +70,7 @@ public class FlyRenderer
 	 *
 	 * @param g
 	 * */
-	public boolean Render(Graphics g) {render_event.invoke(g);return this.auto_repaint;}
+	//public boolean Render(Graphics g) {render_event.invoke(g);return this.auto_repaint;}
 
 
 	/**
@@ -80,7 +82,7 @@ public class FlyRenderer
 	 * @param x2 绘制的第二个点的横坐标
 	 * @param y2 绘制的第二个点的纵坐标
 	 * */
-	public void DrawLine(Graphics g,int x1,int y1,int x2,int y2)
+	public final void DrawLine(Graphics g,int x1,int y1,int x2,int y2)
 	{g.drawLine(x1, y1, x2, y2);}
 
 	/**
@@ -92,7 +94,7 @@ public class FlyRenderer
 	 * @param width 绘制宽度
 	 * @param height 绘制高度
 	 * */
-	public void DrawRect(Graphics g,int x,int y,int width,int height)
+	public final void DrawRect(Graphics g,int x,int y,int width,int height)
 	{g.drawRect(x, y, width, height);}
 
 	/**
@@ -103,9 +105,9 @@ public class FlyRenderer
 	 * @param y 绘制纵坐标
 	 * @param width 绘制宽度
 	 * @param height 绘制高度
-	 * @param raised
+	 * @param raised 用于确定矩形是在曲面上方凸起还是在曲面中凹陷
 	 * */
-	public void Draw3DRect(Graphics g,int x,int y,int width,int height,boolean raised)
+	public final void Draw3DRect(Graphics g,int x,int y,int width,int height,boolean raised)
 	{g.draw3DRect(x, y, width, height, raised);}
 
 	/**
@@ -116,7 +118,7 @@ public class FlyRenderer
 	 * @param x 绘制横坐标
 	 * @param y 绘制纵坐标
 	 * */
-	public void DrawText(Graphics g,String text,int x,int y)
+	public final void DrawText(Graphics g,String text,int x,int y)
 	{g.drawString(text,x,y);}
 
 	/**
@@ -130,7 +132,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,int x,int y,ImageObserver observer)
+	public final boolean DrawImage(Graphics g,Image img,int x,int y,ImageObserver observer)
 	{return g.drawImage(img, x, y, observer);}
 
 	/**
@@ -145,7 +147,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,int x,int y,Color back_ground_color,ImageObserver observer)
+	public final boolean DrawImage(Graphics g,Image img,int x,int y,Color back_ground_color,ImageObserver observer)
 	{return g.drawImage(img, x, y, back_ground_color, observer);}
 
 	/**
@@ -161,7 +163,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,int x,int y,int width,int height,ImageObserver observer)
+	public final boolean DrawImage(Graphics g,Image img,int x,int y,int width,int height,ImageObserver observer)
 	{return g.drawImage(img, x, y, width, height, observer);}
 
 	/**
@@ -178,7 +180,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,int x,int y,int width,int height,
+	public final boolean DrawImage(Graphics g,Image img,int x,int y,int width,int height,
 			Color back_ground_color,ImageObserver observer)
 	{return g.drawImage(img, x, y, width, height, back_ground_color, observer);}
 
@@ -199,7 +201,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,int dx1,int dy1,int dx2,int dy2,
+	public final boolean DrawImage(Graphics g,Image img,int dx1,int dy1,int dx2,int dy2,
 			int sx1,int sy1,int sx2,int sy2,ImageObserver observer)
 	{return g.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);}
 
@@ -221,7 +223,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,int dx1,int dy1,int dx2,int dy2,
+	public final boolean DrawImage(Graphics g,Image img,int dx1,int dy1,int dx2,int dy2,
 			int sx1,int sy1,int sx2,int sy2,Color back_ground_color,ImageObserver observer)
 	{return g.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, back_ground_color, observer);}
 
@@ -242,7 +244,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,float x,float y,int width,int height,
+	public final boolean DrawImage(Graphics g,Image img,float x,float y,int width,int height,
 			int sx,int sy,int swidth,int sheight,ImageObserver observer)
 	{
 		return this.DrawImage(g, img, (int)x, (int)y, (int)x + width, (int)y + height,
@@ -267,7 +269,7 @@ public class FlyRenderer
 	 *
 	 * @return
 	 * */
-	public boolean DrawImage(Graphics g,Image img,float x,float y,int width,int height,
+	public final boolean DrawImage(Graphics g,Image img,float x,float y,int width,int height,
 			int sx,int sy,int swidth,int sheight,Color back_ground_color,ImageObserver observer)
 	{
 		return this.DrawImage(g, img, (int)x, (int)y, (int)x + width, (int)y + height,

@@ -113,8 +113,8 @@ public class FlyTileMap
 								y + i * height, width, height,null);
 				}
 
-				renderer.DrawRect(g, x + j * width, y + i * height,
-						width, height);
+				renderer.Draw3DRect(g, x + j * width, y + i * height,
+						width, height,false);
 			}
 		}
 	}
@@ -147,8 +147,8 @@ public class FlyTileMap
 								y + i * height, width, height,null);
 				}
 
-				renderer.绘制矩形(g, x + j * width, y + i * height,
-						width, height);
+				renderer.绘制3维矩形(g, x + j * width, y + i * height,
+						width, height,false);
 			}
 		}
 	}
@@ -242,6 +242,7 @@ public class FlyTileMap
 	 * */
 	public static void WriteMap(String path,FlyTileMap map) throws IOException
 	{
+		@SuppressWarnings("resource")
 		DataOutputStream writer = new DataOutputStream(new FileOutputStream (path));//创建地图文件
 
 		writer.writeShort(map.width);
@@ -287,6 +288,7 @@ public class FlyTileMap
 	 * */
 	public static FlyTileMap ReadMap(String path) throws IOException
 	{
+		@SuppressWarnings("resource")
 		DataInputStream reader = new DataInputStream(new FileInputStream (path));//打开地图文件
 
 		FlyTileMap map = new FlyTileMap();

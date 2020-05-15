@@ -24,6 +24,12 @@ public class FlyScene extends JPanel
 {
 	private FlyRenderer renderer;///< 渲染器
 
+	/**场景渲染事件*/
+	private Event<Graphics> render_event =
+			new Event<Graphics>(){@Override public void invoke(Graphics t) {}};
+
+	private boolean auto_repaint = false;
+
 	public FlyScene(){renderer = new FlyRenderer();}
 	public FlyScene(Window w) {this();this.AddToWindow(w);}
 	public FlyScene(窗口 w) {this();this.AddToWindow(w);}
@@ -51,9 +57,33 @@ public class FlyScene extends JPanel
 	@Override public void paint(Graphics g)
 	{
 		super.paint(g);
-		if(renderer.Render(g))
+
+		render_event.invoke(g);
+
+		if(auto_repaint
+			//|| renderer.Render(g)
+			)
 			super.repaint();
 	}
+
+
+	/**
+	 * 设置渲染事件
+	 * */
+	public void SetRenderEvent(Event<Graphics> event)
+	{
+		this.render_event = event;
+	}
+
+	/**
+	 * 设置渲染事件
+	 * */
+	public void SetRenderEvent(Event<Graphics> event,boolean repaint)
+	{
+		this.render_event = event;
+		this.auto_repaint = repaint;
+	}
+
 
 	/**
 	 * 设置场景使用的渲染器

@@ -289,8 +289,8 @@ public class Main
 
 				JButton yes_button = new JButton("确认");
 
-				JList list = new JList();
-				DefaultListModel defaultListModel = new DefaultListModel();
+				JList<String> list = new JList<String>();
+				DefaultListModel<String> defaultListModel = new DefaultListModel<String>();
 
 				defaultListModel.add(0, "null");
 
@@ -481,9 +481,9 @@ public class Main
 		});
 
 
-		场景1.获取渲染器().设置渲染事件(new 事件<Graphics>(){
+		场景1.设置渲染事件(new 事件<Graphics>(){
 
-			long ms = 1000/30;
+			final long ms = 1000/30;
 
 			@Override
 			public void 执行(Graphics g)
