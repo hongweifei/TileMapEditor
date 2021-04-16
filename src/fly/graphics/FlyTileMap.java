@@ -2,21 +2,19 @@ package fly.graphics;
 
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 
 
 /**
  * @file FlyTileMap.java
  * @author Fly
  */
+
 
 
 
@@ -27,17 +25,12 @@ public class FlyTileMap
 {
 	public short width;///< 地图宽度
 	public short height;///< 地图高度
-    public short tile_width;///< 瓦片宽度
-    public short tile_height;///< 瓦片高度
 
-    public short tile_count;///< 瓦片地图的图像数量
-    public String[] tile_image_path;///< 瓦片地图内的图片路径
+    public ArrayList<Tile> tile;///< 瓦片
 
     public short[] data;///< 瓦片地图数据
 
-    private Image[] img = null;
-
-	public FlyTileMap(){this(0,0,0,0,null,null);}
+	public FlyTileMap() throws IOException{this(0,0,null,null);}
 
 	/**
 	 * @param width 地图宽度
@@ -46,31 +39,25 @@ public class FlyTileMap
 	 * @param tile_height 瓦片高度
 	 * @param data 瓦片地图数据
 	 * @param tile_image_path 瓦片地图内的图片路径
+	 * @throws IOException 
 	 * */
 	public FlyTileMap(int width,int height,
-			int tile_width,int tile_height,
 			short[] data,
-			String... tile_image_path)
+			String... tile_image_path) throws IOException
 	{
 		this.width = (short) width;
 		this.height = (short) height;
-		this.tile_width = (short) tile_width;
-		this.tile_height = (short) tile_height;
+		
+		this.tile = new ArrayList<Tile>(); 
 
 		if(tile_image_path != null)
 		{
-			this.tile_count = (short) tile_image_path.length;
-			this.img = new Image[this.tile_count];
-			for(int i = 0;i < this.tile_count;i++)
+			for(int i = 0;i < tile_image_path.length;i++)
 			{
-				try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
-				catch (IOException e) {e.printStackTrace();}
+				this.tile.add(new Tile(tile_image_path[i]));
 			}
 		}
-		else
-			this.tile_count = 0;
 
-		this.tile_image_path = tile_image_path;
 		this.data = data;
 	}
 
@@ -109,8 +96,9 @@ public class FlyTileMap
 				int n = j + i * this.width;
 				if(this.data[n] > 0)
 				{
-					renderer.DrawImage(g, img[this.data[n] - 1], x + j * width,
-								y + i * height, width, height,null);
+					Tile tile = this.tile.get(this.data[n] - 1);
+					renderer.DrawImage(g, tile.img, x + j * width,
+								y + i * height, tile.tile_width * width, tile.tile_height * height,null);
 				}
 
 				renderer.Draw3DRect(g, x + j * width, y + i * height,
@@ -129,13 +117,7 @@ public class FlyTileMap
 	 * */
 	public void Render(渲染器 renderer,Graphics g,int x,int y,int width,int height)
 	{
-		final Image[] img = new Image[this.tile_count];
-		for(int i = 0;i < this.tile_count;i++)
-		{
-			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
-			catch (IOException e) {e.printStackTrace();}
-		}
-
+		
 		for(int i = 0;i < this.height;i++)
 		{
 			for(int j = 0;j < this.width;j++)
@@ -143,8 +125,10 @@ public class FlyTileMap
 				int n = j + i * this.width;
 				if(this.data[n] > 0)
 				{
-					renderer.绘制图像(g, img[this.data[n] - 1], x + j * width,
-								y + i * height, width, height,null);
+					Tile tile = this.tile.get(this.data[n] - 1);
+					
+					renderer.绘制图像(g, tile.img, x + j * width,
+								y + i * height, tile.tile_width * width, tile.tile_height * height,null);
 				}
 
 				renderer.绘制3维矩形(g, x + j * width, y + i * height,
@@ -153,44 +137,38 @@ public class FlyTileMap
 		}
 	}
 
-
+	
 
 	/**
-	 * 添加图片
+	 * 添加Tile
+	 *
+	 * @param t_w tile_width
+	 * @param t_h tile_height
+	 * @param path 图片路径
+	 * */
+	public void AddTile(short t_w,short t_h,String path)
+	{
+		try {
+			this.tile.add(new Tile(t_w,t_h,path));
+			}
+		catch (IOException e) {e.printStackTrace();}
+	}
+	
+	
+	/**
+	 * 添加Tile
 	 *
 	 * @param path 图片路径
 	 * */
-	public void AddImage(String path)
-	{
-		tile_count++;
-
-		String[] image_path = tile_image_path;
-		tile_image_path = new String[tile_count];
-
-		System.arraycopy(image_path,0,tile_image_path,0,image_path.length);
-
-		tile_image_path[tile_count - 1] = path;
-
-
-		this.img = new Image[this.tile_count];
-
-		for(int i = 0;i < this.tile_count;i++)
-		{
-			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
-			catch (IOException e) {e.printStackTrace();}
-		}
-
-	}
-
-
+	public void AddTile(String path){this.AddTile((short)1, (short)1, path);}
 
 
 	/**
-	 * 移除图片
+	 * 移除Tile
 	 *
 	 * @index 图片索引
 	 * */
-	public void RemoveImage(int index)
+	public void RemoveTile(int index)
 	{
 		for(int i = 0;i < height;i++)
 		{
@@ -205,28 +183,7 @@ public class FlyTileMap
 			}
 		}
 
-		tile_count--;
-
-		String[] image_path = tile_image_path;
-		tile_image_path = new String[tile_count];
-
-		int j = 0;
-		for(int i = 0;i < tile_count;i++)
-		{
-			if(i == index)
-				j++;
-
-			tile_image_path[i] = image_path[j];
-
-			j++;
-		}
-
-		this.img = new Image[this.tile_count];
-		for(int i = 0;i < this.tile_count;i++)
-		{
-			try {img[i] = ImageIO.read(new File(this.tile_image_path[i]));}
-			catch (IOException e) {e.printStackTrace();}
-		}
+		
 	}
 
 
@@ -247,18 +204,20 @@ public class FlyTileMap
 
 		writer.writeShort(map.width);
 		writer.writeShort(map.height);
-		writer.writeShort(map.tile_width);
-		writer.writeShort(map.tile_height);
 
-		writer.writeShort(map.tile_count);
+		writer.writeShort(map.tile.size());
 
-		if(map.tile_count > 0)
+		if(map.tile.size() > 0)
 		{
-			for(int i = 0;i < map.tile_image_path.length;i++)
+			
+			for(int i = 0;i < map.tile.size();i++)
 			{
-				short str_n = (short) map.tile_image_path[i].length();
+				writer.writeShort(map.tile.get(i).tile_width);
+				writer.writeShort(map.tile.get(i).tile_height);
+				
+				short str_n = (short) map.tile.get(i).image_path.length();
 				writer.writeShort(str_n);
-				writer.writeChars(map.tile_image_path[i]);
+				writer.writeChars(map.tile.get(i).image_path);
 			}
 		}
 
@@ -292,20 +251,19 @@ public class FlyTileMap
 		DataInputStream reader = new DataInputStream(new FileInputStream (path));//打开地图文件
 
 		FlyTileMap map = new FlyTileMap();
+		short tile_count = 0;
 
 		map.width = reader.readShort();
 		map.height = reader.readShort();
-		map.tile_width = reader.readShort();
-		map.tile_height = reader.readShort();
 
-		map.tile_count = reader.readShort();
-		map.tile_image_path = new String[map.tile_count];
+		tile_count = reader.readShort();
 
 
-		map.img = new Image[map.tile_count];
-
-		for(int i = 0;i < map.tile_count;i++)
+		for(int i = 0;i < tile_count;i++)
 		{
+			short tile_width = reader.readShort();
+			short tile_height = reader.readShort();
+			
 			/*读取图片路径字节数*/
 			short image_path_n = reader.readShort();
 
@@ -315,11 +273,8 @@ public class FlyTileMap
 			{
 				image_path[j] = reader.readChar();
 			}
-
-			map.tile_image_path[i] = new String(image_path);
-
-			try {map.img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
-			catch (IOException e) {e.printStackTrace();}
+			
+			map.tile.add(new Tile((short)tile_width,(short)tile_height,new String(image_path)));
 		}
 
 		map.data = new short[map.width * map.height];
@@ -349,7 +304,7 @@ typedef struct
 
 typedef struct
 {
-    short tile_count;
+    short tile.length;
     char **tile_image_path;
 }TileMapSets;
 
@@ -365,7 +320,7 @@ typedef struct
     TileMapData map_data;
 }TileMap;
 
-void WriteTileMap(const char *path,TileMapInformation map_information,TileMapData map_data,short tile_count,...);
+void WriteTileMap(const char *path,TileMapInformation map_information,TileMapData map_data,short tile.length,...);
 TileMap ReadTileMap(const char *path);
 
 */
@@ -373,18 +328,18 @@ TileMap ReadTileMap(const char *path);
 
 /*
 
-void WriteTileMap(const char *path,TileMapInformation map_information,TileMapData map_data,short tile_count,...)
+void WriteTileMap(const char *path,TileMapInformation map_information,TileMapData map_data,short tile.length,...)
 {
-    short *image_path_str_n = (short*)calloc(tile_count,sizeof(short));//图片路径字符串大小
-    char *image_path[tile_count];//图片路径
+    short *image_path_str_n = (short*)calloc(tile.length,sizeof(short));//图片路径字符串大小
+    char *image_path[tile.length];//图片路径
 
-    if(tile_count > 0)
+    if(tile.length > 0)
     {
         va_list image_path_list;
-        va_start(image_path_list,tile_count);
+        va_start(image_path_list,tile.length);
 
         int i;
-        for (i = 0; i < tile_count; i++)
+        for (i = 0; i < tile.length; i++)
         {
             image_path[i] = va_arg(image_path_list,char*);//取出图片路径
             image_path_str_n[i] = strlen(image_path[i]);//计算图片路径字符串大小
@@ -399,10 +354,10 @@ void WriteTileMap(const char *path,TileMapInformation map_information,TileMapDat
     fseek(fp,0L,SEEK_SET);
     fwrite(&map_information,1,sizeof(TileMapInformation),fp);//写出地图信息
 
-    fwrite(&tile_count,1,sizeof(tile_count),fp);//写出瓦片数量
+    fwrite(&tile.length,1,sizeof(tile.length),fp);//写出瓦片数量
 
     int i;
-    for (i = 0; i < tile_count; i++)
+    for (i = 0; i < tile.length; i++)
     {
         fwrite(&image_path_char_n[i],1,sizeof(short),fp);//写出瓦片图片路径字符
         fwrite(&image_path[i],1,sizeof(char) * image_path_char_n[i],fp);
@@ -428,14 +383,14 @@ TileMap ReadTileMap(const char *path)
 
     tile_map_data.data = (short*)malloc(tile_map_information.width * tile_map_information.height * sizeof(short));
 
-    fread(&tile_sets,1,sizeof(short),fp);//读入tile_count
+    fread(&tile_sets,1,sizeof(short),fp);//读入tile.length
 
-    if(tile_sets.tile_count > 0)
+    if(tile_sets.tile.length > 0)
     {
-        tile_sets.tile_image_path = (char**)calloc(tile_sets.tile_count,sizeof(char*));
+        tile_sets.tile_image_path = (char**)calloc(tile_sets.tile.length,sizeof(char*));
 
         int i;
-        for (i = 0; i < tile_sets.tile_count; i++)
+        for (i = 0; i < tile_sets.tile.length; i++)
         {
             short image_path_str_n;
             fread(&image_path_char_n,1,sizeof(short),fp);
