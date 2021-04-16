@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -70,11 +69,11 @@ public class Main
 			//System.out.println();
 		}
 
-		img = new Image[map.tile_count];
-		for(int i = 0;i < map.tile_count;i++)
+		img = new Image[map.tile.size()];
+		for(int i = 0;i < map.tile.size();i++)
 		{
 			//System.out.println(map.tile_image_path[i]);
-			try {img[i] = ImageIO.read(new File(map.tile_image_path[i]));}
+			try {img[i] = ImageIO.read(new File(map.tile.get(i).image_path));}
 			catch (IOException e) {e.printStackTrace();}
 		}
 
@@ -87,23 +86,19 @@ public class Main
 		主窗口 = new 窗口("Tile Map Editor");
 		//主窗口.设置布局();
 
-		地图属性设置窗口 = new FlyDialog(主窗口,"地图属性设置",250,100);
+		地图属性设置窗口 = new FlyDialog(主窗口,"地图属性设置",300,100);
 		地图属性设置窗口.SetLayout(new GridLayout(0,4));
 
 		label = new FlyLabelManager();
-		label.AddLabels("地图宽度：","地图高度：","瓦片宽度：","瓦片高度：");
+		label.AddLabels("地图宽度：","地图高度：");
 
 		text_field = new FlyTextFieldManager();
-		text_field.AddTextFields("0","0","0","0");
+		text_field.AddTextFields("0","0");
 
 		label.AddToWindow(地图属性设置窗口,0);
 		text_field.AddToWindow(地图属性设置窗口,0);
 		label.AddToWindow(地图属性设置窗口,1);
 		text_field.AddToWindow(地图属性设置窗口,1);
-		label.AddToWindow(地图属性设置窗口,2);
-		text_field.AddToWindow(地图属性设置窗口,2);
-		label.AddToWindow(地图属性设置窗口,3);
-		text_field.AddToWindow(地图属性设置窗口,3);
 
 		JButton create_map_button = new JButton("确定");
 		地图属性设置窗口.Add(create_map_button);
@@ -113,10 +108,14 @@ public class Main
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				FlyTileMap new_map = new FlyTileMap(Integer.parseInt(text_field.GetText(0)),
-						Integer.parseInt(text_field.GetText(1)),
-						Integer.parseInt(text_field.GetText(2)),
-						Integer.parseInt(text_field.GetText(3)),null,null);
+				FlyTileMap new_map = null;
+				
+				try {
+					new_map = new FlyTileMap(Integer.parseInt(text_field.GetText(0)),
+							Integer.parseInt(text_field.GetText(1)),
+							null,null);
+					}
+				catch (NumberFormatException | IOException e2){e2.printStackTrace();}
 
 				tile_map_path += ".map";
 
@@ -135,58 +134,127 @@ public class Main
 		菜单栏1.添加菜单("文件","地图","地图绘制");
 
 		菜单栏1.添加菜单项(0, "新建","打开","保存","另存为","关闭");
-		菜单栏1.添加菜单项(1, "导入图片(绝对路径)","导入图片(相对路径)","移除图片");
+		菜单栏1.添加菜单项(1, "添加瓦片(绝对路径)","添加瓦片(相对路径)","移除瓦片");
 		菜单栏1.添加菜单项(2,"绘制宽高调整","绘制图片选择");
 		菜单栏1.插入分割线(0, 2);
 		菜单栏1.插入分割线(0, 5);
 		菜单栏1.插入分割线(1, 2);
 
-		/*导入图片(绝对路径)*/
-		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("导入图片(绝对路径)"), new FlyActionAndChangeListener(){
+		/*添加瓦片(绝对路径)*/
+		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("添加瓦片(绝对路径)"), new FlyActionAndChangeListener(){
 
 			@Override public void actionPerformed(ActionEvent e)
 			{
-				文件选择器 文件选择器1 = new 文件选择器();
-				文件选择器1.设置文件过滤器("图像文件", "png","bmp","jpg","jepg");
-				if(文件选择器1.弹出对话框("确定") == 文件选择器.确定选项)
-				{
-					if(map != null)
-						map.AddImage(文件选择器1.获取选中文件的路径());
-				}
+				FlyDialog 添加瓦片窗口 = new FlyDialog(主窗口,"图片路径设置",300,100);
+				添加瓦片窗口.SetLayout(new GridLayout(2,1));
+				
+				FlyLabelManager label = new FlyLabelManager();
+				label.AddLabels("瓦片宽度：","瓦片高度：","图片路径：");
+
+				FlyTextFieldManager text_field = new FlyTextFieldManager();
+				text_field.AddTextFields("1","1","");
+				
+				JButton 图片路径浏览按钮 = new JButton("浏览");
+				JButton 导入按钮 = new JButton("导入");
+				
+				图片路径浏览按钮.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						文件选择器 文件选择器1 = new 文件选择器();
+						文件选择器1.设置文件过滤器("图像文件(*.png/*.bmp/*.jpg/*.jepg)", "png","bmp","jpg","jepg");
+						if(文件选择器1.弹出对话框("确定") == 文件选择器.确定选项)
+						{
+							text_field.SetText(文件选择器1.获取选中文件的路径(), 2);
+						}
+					}
+					
+				});
+				
+				
+				导入按钮.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						if(map != null && !text_field.GetText(2).isEmpty())
+						{
+							short tw = 1;
+							short th = 1;
+							if(text_field.GetText(0) != null)
+								tw = Short.parseShort(text_field.GetText(0));
+							if(text_field.GetText(1) != null)
+								th = Short.parseShort(text_field.GetText(1));
+							
+							map.AddTile(tw,th,text_field.GetText(2));
+						}
+						添加瓦片窗口.SetVisible(false);
+					}
+					
+				});				
+				
+				label.AddToWindow(添加瓦片窗口,0);
+				text_field.AddToWindow(添加瓦片窗口,0);
+				label.AddToWindow(添加瓦片窗口,1);
+				text_field.AddToWindow(添加瓦片窗口,1);
+				label.AddToWindow(添加瓦片窗口,2);
+				text_field.AddToWindow(添加瓦片窗口,2);
+				添加瓦片窗口.Add(图片路径浏览按钮);
+				添加瓦片窗口.Add(导入按钮);
+				添加瓦片窗口.SetVisible(true);
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 
-		/*导入图片(相对路径)*/
-		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("导入图片(相对路径)"), new FlyActionAndChangeListener(){
+		/*添加瓦片(相对路径)*/
+		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("添加瓦片(相对路径)"), new FlyActionAndChangeListener(){
 
 			@Override public void actionPerformed(ActionEvent e)
 			{
-				FlyDialog 导入图片窗口 = new FlyDialog(主窗口,"图片路径设置",250,100);
-				导入图片窗口.SetLayout(new GridLayout(2,1));
+				FlyDialog 添加瓦片窗口 = new FlyDialog(主窗口,"图片路径设置",300,100);
+				添加瓦片窗口.SetLayout(new GridLayout(2,1));
+				
+				FlyLabelManager label = new FlyLabelManager();
+				label.AddLabels("瓦片宽度：","瓦片高度：","图片路径：");
 
-				FlyTextFieldManager manager = new FlyTextFieldManager();
-				manager.AddTextField();
+				FlyTextFieldManager text_field = new FlyTextFieldManager();
+				text_field.AddTextFields("1","1","");
+				
 
 				JButton 导入按钮 = new JButton("导入");
 				导入按钮.addActionListener(new ActionListener() {
 					@Override public void actionPerformed(ActionEvent e)
 					{
-						if(map != null && !manager.GetText(0).isEmpty())
-							map.AddImage(manager.GetText(0));
-						导入图片窗口.SetVisible(false);
+						if(map != null && !text_field.GetText(2).isEmpty())
+						{
+							short tw = 1;
+							short th = 1;
+							if(text_field.GetText(0) != null)
+								tw = Short.parseShort(text_field.GetText(0));
+							if(text_field.GetText(1) != null)
+								th = Short.parseShort(text_field.GetText(1));
+							
+							map.AddTile(tw,th,text_field.GetText(2));
+						}
+						添加瓦片窗口.SetVisible(false);
 					}
 				});
 
-				manager.AddToWindow(导入图片窗口);
-				导入图片窗口.Add(导入按钮);
-				导入图片窗口.SetVisible(true);
+				label.AddToWindow(添加瓦片窗口,0);
+				text_field.AddToWindow(添加瓦片窗口,0);
+				label.AddToWindow(添加瓦片窗口,1);
+				text_field.AddToWindow(添加瓦片窗口,1);
+				label.AddToWindow(添加瓦片窗口,2);
+				text_field.AddToWindow(添加瓦片窗口,2);
+				添加瓦片窗口.Add(导入按钮);
+				添加瓦片窗口.SetVisible(true);
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
 		});
 
-		/*移除图片*/
-		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("移除图片"), new FlyActionAndChangeListener(){
+		/*移除瓦片*/
+		菜单栏1.添加监听器(菜单栏1.获取菜单项索引("移除瓦片"), new FlyActionAndChangeListener(){
 
 			@Override public void actionPerformed(ActionEvent e)
 			{
@@ -194,13 +262,13 @@ public class Main
 				{
 					FlyTileMap now_map = map;
 
-					FlyDialog 移除图片窗口 = new FlyDialog(主窗口,"移除图片",250,100);
-					移除图片窗口.SetLayout(new GridLayout());
+					FlyDialog 移除瓦片窗口 = new FlyDialog(主窗口,"移除瓦片",250,100);
+					移除瓦片窗口.SetLayout(new GridLayout());
 
 					FlyList<String> list = new FlyList<String>();
 
-					for(int i = 0;i < map.tile_count;i++)
-						list.AddItem(map.tile_image_path[i]);
+					for(int i = 0;i < map.tile.size();i++)
+						list.AddItem(map.tile.get(i).image_path);
 
 					JButton 移除按钮 = new JButton("移除");
 					移除按钮.addActionListener(new ActionListener() {
@@ -210,7 +278,7 @@ public class Main
 							{
 								map_can_render = false;
 
-								map.RemoveImage(list.Get().getSelectedIndex());
+								map.RemoveTile(list.Get().getSelectedIndex());
 
 								map_can_render = true;
 							}
@@ -219,15 +287,15 @@ public class Main
 								"该地图以关闭", "提示", JOptionPane.DEFAULT_OPTION,
 								JOptionPane.ERROR_MESSAGE, null, null, null);
 
-							移除图片窗口.SetVisible(false);
+							移除瓦片窗口.SetVisible(false);
 
 
 						}
 					});
 
-					移除图片窗口.Add(list);
-					移除图片窗口.Add(移除按钮);
-					移除图片窗口.SetVisible(true);
+					移除瓦片窗口.Add(list);
+					移除瓦片窗口.Add(移除按钮);
+					移除瓦片窗口.SetVisible(true);
 				}
 			}
 			@Override public void stateChanged(ChangeEvent event) {}
@@ -296,9 +364,9 @@ public class Main
 
 				if(map != null)
 				{
-					for(int i = 0;i < map.tile_count;i++)
+					for(int i = 0;i < map.tile.size();i++)
 					{
-						defaultListModel.add(i + 1, map.tile_image_path[i]);
+						defaultListModel.add(i + 1, map.tile.get(i).image_path);
 					}
 				}
 
